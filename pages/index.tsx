@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useEffect } from 'react'
 import GoogleMap from '../components/GoogleMap'
 import LeafletMapLoader from '../components/LeafletMap/LeafletMapLoader'
