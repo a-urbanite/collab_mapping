@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic'
 import React from 'react'
 import { locationsType } from '../../pages/api/starterSet'
 
-const LeafletMapLoader = () => {
+const LeafletMapLoader = (locations: any) => {
 
   const Map = dynamic(
     () => import('./LeafletMap'),
@@ -14,9 +14,10 @@ const LeafletMapLoader = () => {
   
   return (
     <>
-      <Map/>
+      <Map locations={locations}/>
     </>
   )
 }
+
 
 export default LeafletMapLoader

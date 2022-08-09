@@ -9,11 +9,9 @@ interface HomepageProps {
 
 function HomePage(props: HomepageProps) {
 
-  console.log(props.locations)
-
   return (
     <>
-      <LeafletMapLoader/>
+      <LeafletMapLoader locations={props.locations}/>
       <GoogleMap/>
     </>
   )
