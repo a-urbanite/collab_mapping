@@ -2,9 +2,11 @@ import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { locationsType } from '../../pages/api/starterSet'
 
+interface leafletMapProps {
+  locations: locationsType
+}
 
-
-const LeafletMap = ({locations}:any) => {
+const LeafletMap = ({ locations }:leafletMapProps) => {
 
   console.log("INSIDE THE MAP", locations)
 
