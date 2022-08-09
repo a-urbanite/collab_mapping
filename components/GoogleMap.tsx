@@ -8,7 +8,7 @@ const containerStyle = {
   height: '80vh'
 };
 
-const center = { lat: 59.33, lng: 18.0465 }
+const center = { lat: 52.5200, lng: 13.4050 }
 
 const Map = () => {
 
