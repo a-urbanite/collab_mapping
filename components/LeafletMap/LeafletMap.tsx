@@ -6,7 +6,7 @@ import { locationsType } from '../../pages/api/starterSet'
 
 const LeafletMap = ({locations}:any) => {
 
-  console.log("INSIDE THE MAP", locations.locations)
+  console.log("INSIDE THE MAP", locations)
 
   return (
     <MapContainer center={[52.5200, 13.4050]} zoom={13} scrollWheelZoom={false} style={{height: 400, width: "100%"}}>
@@ -14,7 +14,7 @@ const LeafletMap = ({locations}:any) => {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {locations.locations.map((location: any) => 
+      {locations.map((location: any) => 
         <Marker 
           key={location._id} 
           position={location.coords} 
