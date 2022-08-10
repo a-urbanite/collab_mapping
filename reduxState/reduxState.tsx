@@ -7,6 +7,7 @@ const counterSlice = createSlice({
   },
   reducers: {
     incremented: (state: { value: number }) => {
+      console.log("test")
       state.value += 1
     },
     decremented: (state: { value: number }) => {
@@ -33,17 +34,29 @@ const nameSlice = createSlice({
 export const { replaceName } = nameSlice.actions
 
 
-// const locationsSlice = createSlice({
-//   name: "locations",
-//   initialState: starterSet,
-//   reducers: {
-//     getAllLocations
-//   }
-// })
+const locationsSlice = createSlice({
+  name: "locations",
+  initialState: [],
+  reducers: {
+    getLocations: (state) => {
+      return state
+    },
+    addLocations: (state: any, action: any) => {
+      console.log("ADDLOCACTIONS TRIGGERED")
+      console.log("action payload", action.payload)
+      state = [...action.payload]
+      console.log("state after update", state)
+      return state
+    }
+  }
+})
 
-export const counterstore = configureStore({
+export const { getLocations, addLocations } = locationsSlice.actions
+
+export const reduxstore = configureStore({
   reducer: { 
     counter: counterSlice.reducer,
-    name: nameSlice.reducer  
+    name: nameSlice.reducer,
+    locations: locationsSlice.reducer
   }
 })

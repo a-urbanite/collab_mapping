@@ -1,27 +1,21 @@
-import dynamic from 'next/dynamic'
 import React, { useRef } from 'react'
-import Drawtools from '../components/LeafletMap/Drawtools'
-import LeafletMapLoader from '../components/LeafletMap/LeafletMapLoader'
-// import Map from '../components/GoogleMap'
+import { useSelector } from 'react-redux';
 import EditableMapLoader from '../components/LeafletMap/EditableMapLoader'
+import ExportUI from '../components/LeafletMap/ExportUI'
 
 
 const EditMap = (props: any) => {
 
   const drawnLayersRef = useRef(null);
+  const preexistingLocations = useSelector((state: any) => state.locations)
+  console.log("LOCATOINS", preexistingLocations)
 
   return (
     <>
       <EditableMapLoader locations={props.locations} drawnLayersRef={drawnLayersRef}/>
-      <button onClick={() => exportAllFunc(drawnLayersRef)}>Export shit</button>
+      <ExportUI drawnLayersRef={drawnLayersRef}/>
     </>
   )
-}
-
-
-
-const exportAllFunc = (featureGroupRef: any) => {
-  featureGroupRef.current.eachLayer((layer: any) => console.log("first", layer.toGeoJSON()))
 }
 
 export async function getServerSideProps() {
