@@ -22,18 +22,18 @@
   padding: 0.5rem 1rem 0.5rem 1rem;
   margin: 0;
   
-  background-color: #fff8f5;
-  border: none;
-  box-shadow: none;
-  font-family: 'Quicksand', sans-serif;
-  font-size: 0.8rem;
-  color: black;
+  /* background-color: #fff8f5; */
+  /* border: none;
+  box-shadow: none; */
+  /* font-family: 'Quicksand', sans-serif; */
+  /* font-size: 0.8rem; */
+  /* color: black; */
 
 }
 
 .mainNav__link:hover {
-  background-color: #ffe8dc;
-  color: grey
+  background-color: white;
+  color: black
 }
 
 .mainNav__subLink {

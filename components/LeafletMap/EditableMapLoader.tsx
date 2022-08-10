@@ -4,12 +4,13 @@ import { locationsType } from '../../pages/api/starterSet'
 
 interface leafletLoaderProps {
   locations: locationsType
+  drawnLayersRef: any
 }
 
-const LeafletMapLoader = ({ locations }: leafletLoaderProps) => {
+const LeafletMapLoader = ({ locations, drawnLayersRef }: leafletLoaderProps) => {
 
   const Map = dynamic(
-    () => import('./LeafletMap'),
+    () => import('./EditableMap'),
     { 
       loading: () => <p>Map is loading</p>,
       ssr: false
@@ -18,7 +19,7 @@ const LeafletMapLoader = ({ locations }: leafletLoaderProps) => {
   
   return (
     <>
-      <Map locations={locations}/>
+      <Map locations={locations} drawnLayersRef={drawnLayersRef}/>
     </>
   )
 }
