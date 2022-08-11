@@ -55,14 +55,15 @@ export const { getLocations, addLocations } = locationsSlice.actions
 
 const authenticationSlice = createSlice({
   name: "authentication",
-  initialState: false,
+  initialState: null,
   reducers: {
-    signInUser: (state) => {
-      state = true
+    signInUser: (state, action) => {
+      state = action.payload
+      console.log("state", state)
       return state
     },
     signOutUser: (state) => {
-      state = false
+      state = null
       return state
     }
   }

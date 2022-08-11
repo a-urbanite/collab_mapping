@@ -1,9 +1,6 @@
-import Link from 'next/link'
 import styles from './MainNav.module.css'
-import { useRouter } from 'next/router';
 import MenuPoint from './MenuPoint';
-// import {signOut} from 'firebase/auth'
-// import { auth } from '../firebase-config';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase-config';
@@ -14,11 +11,9 @@ const MainNav = () => {
 
   const router = useRouter()
   const dispatch = useDispatch()
-
   const isAuth = useSelector((state: any) => state.authentication)
-  console.log("ISAUTH", isAuth)
-  // const isAuth = useSelector( (state: any) => state.authState.isauth)
-  // console.log("authstate from withing mainnav", isAuth)
+  // console.log("ISAUTH", isAuth)
+
 
   const signUserOut = () => {
     signOut(auth).then(() => {
@@ -36,8 +31,7 @@ const MainNav = () => {
               <MenuPoint name="Home" href="/" className={styles.mainNav__link}/>
               { isAuth && <MenuPoint name="Edit Map" href="/editMap" className={styles.mainNav__link}/>}
               { !isAuth && <MenuPoint name="Log in" href="/login" className={styles.mainNav__link}/>}
-              { !isAuth && <MenuPoint name="Sign Up" href="/signup" className={styles.mainNav__link}/>}
-              { isAuth && <li><button onClick={() => signUserOut()}>Log Out</button></li>}
+              { isAuth && <li className={styles.mainNav__link} onClick={() => signUserOut()}>Log out</li>}
 
           </ul>
       </nav>

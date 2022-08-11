@@ -1,11 +1,18 @@
-.loginForm {
+.loginWrapper {
   display: flex;
   flex-direction: column;
   /* align-items: flex-start; */
   
   width: 50%;
+  margin-top: 3rem;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 3rem;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 3rem;
 }
 

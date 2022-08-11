@@ -33,7 +33,10 @@
 
 .mainNav__link:hover {
   background-color: white;
-  color: black
+  color: black;
+  pointer-events: fill;
+  cursor: pointer;
+ 
 }
 
 .mainNav__subLink {

@@ -1,39 +1,18 @@
-import React, { useContext } from 'react'
-import {auth, provider} from '../firebase-config'
-import {signInWithPopup} from 'firebase/auth'
-// import { useNavigate } from 'react-router-dom'
-import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom"
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-  updateProfile
-} from "firebase/auth";
-// import { auth } from "../../firebase/firebase-config";
-// import styles from "../styles/pages/signin.module.css"
+import {auth} from '../firebase-config'
+import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from 'next/router';
-
-// import { counterstore } from '../redux_state.js'
-// import { authenticate } from '../redux_state';
-import { useSelector, useDispatch } from 'react-redux'
-
+import { useDispatch } from 'react-redux'
 import styles from '../styles/pages/login.module.css'
-// import { authUserContext } from './_app';
 import { signInUser } from '../reduxState/reduxState';
 
-const Login = ({ setIsAuth }: any) => {
+const Login = () => {
 
-  // const count = useSelector((state: any) => state.isauth)
   const dispatch = useDispatch()
-  
   const router = useRouter()
-  // const contextData = useContext(authUserContext);
-  // console.log(contextData)
-
   const [logInEmail, setlogInEmail] = useState<string>("");
   const [logInPassword, setlogInPassword] = useState<string>("");
+
 
   const signInWithEmail = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -42,26 +21,16 @@ const Login = ({ setIsAuth }: any) => {
       console.log(error.code);
       console.log(error.message);
     });
-    console.log("RETURN OF LOGIN OBJECT",typeof result!.user, result!.user)
-    dispatch(signInUser())
-    router.push('/')
-
-
-    // const result = await signInWithEmailAndPassword(auth, logInEmail, logInPassword)
-    //   .catch(function(error) {
-    //     console.log(error.code);
-    //     console.log(error.message);
-    //   });
-    // console.log("RETURN OF LOGIN OBJECT",typeof result!.user, result!.user)
-    // if(result) {
-    //     counterstore.dispatch(authenticate({
-    //       name: result.user.displayName,
-    //       email: result.user.email,
-    //       uid: result.user.uid
-    //     }))
-    //     router.push('/')
-    // }
+    // const user = result?.user
+    console.log("RETURN OF LOGIN OBJECT",result!.user)
+    dispatch(signInUser({
+      name: result?.user.displayName,
+      email: result?.user.email,
+      id: result?.user.uid
+    }))
+    // router.push('/')
   }
+
 
   // const signInWithGoogle = () => {
   //   signInWithPopup(auth, provider).then((result) => {
@@ -73,7 +42,7 @@ const Login = ({ setIsAuth }: any) => {
 
 
   return (
-    <article className='page'>
+    <div className={styles.loginWrapper}>
       <h1>Sign in</h1>
       <form className={styles.loginForm} onSubmit={signInWithEmail}>
         {/* <h2>Sign in with Email</h2> */}
@@ -99,9 +68,9 @@ const Login = ({ setIsAuth }: any) => {
       </form>
       {/* <p>Sign in with Google</p>
       <button className='login-with-google-btn' onClick={signInWithGoogle}>Sign in with Google</button> */}
-      {/* <p>not registered yet? Signup</p>
-      <button onClick={() => navigate('/signup')}>Sign up</button> */}
-    </article>
+      <p>not registered yet?</p>
+      <button className={styles.loginForm__submit} onClick={() => router.push('/signup')}>Sign up!</button>
+    </div>
   )
 }
 
