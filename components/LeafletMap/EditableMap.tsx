@@ -5,14 +5,23 @@ import 'leaflet-draw/dist/leaflet.draw.css'
 import { FeatureGroup, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { locationsType } from '../../pages/api/starterSet'
 import { EditControl } from 'react-leaflet-draw'
+import styles from '../../styles/components/popupForm.module.css'
 import L from 'leaflet';
 import { useRef } from 'react';
+import PopupForm from './PopupForm'
 
 
 interface leafletMapProps {
   locations: locationsType
   drawnLayersRef: any
 }
+
+const popupForm = 
+'<form className="popupForm__form">\
+<input name="name" placeholder="name..." className="popupForm__input"/>\
+<input name="description" placeholder="description..." className="popupForm__input"/>\
+<input type="submit" value="save" className="popupForm__submit"/>\
+</form>'
 
 const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
 
@@ -45,7 +54,16 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
                 circlemarker: false,
                 polyline: { 
                   showLength: true,
-                  metric: true }
+                  metric: true },
+                polygon: {
+                  allowIntersection: false, // Restricts shapes to simple polygons
+                  drawError: {
+                    color: 'red', // Color the shape will turn when intersects
+                    message: '<strong>That´s a terrible polygon! Draw that again!' // Message that will show when intersect
+                  },
+                  shapeOptions: {
+                    // color: '#97009c'
+                  }}
               }}
               onEdited={(e) => {
                 console.log("Pressed Save button in edit bar")
@@ -54,6 +72,7 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
               onCreated={(e) => {
                 console.log("onCreated!")
                 console.log("CREATED LAYER", e.layer.toGeoJSON())
+                e.layer.bindPopup(popupForm).openPopup();
               }}
               onDeleted={() => console.log("onDeleted!")}
               onMounted={() => console.log("onMounted!")}

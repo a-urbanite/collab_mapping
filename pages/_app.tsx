@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import '../styles/popupForm.css'
 import type { AppProps } from 'next/app'
 import MainNav from '../components/MainNav/MainNav'
 import { Provider } from 'react-redux'

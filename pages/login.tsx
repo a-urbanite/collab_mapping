@@ -28,7 +28,7 @@ const Login = () => {
       email: result?.user.email,
       id: result?.user.uid
     }))
-    // router.push('/')
+    router.push('/')
   }
 
 

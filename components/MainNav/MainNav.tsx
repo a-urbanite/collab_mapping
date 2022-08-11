@@ -21,7 +21,7 @@ const MainNav = () => {
         // setIsAuth(false)
         // window.location.pathname = "/login"
         dispatch(signOutUser())
-        router.push("/login")
+        router.push("/")
     })
   }
 
