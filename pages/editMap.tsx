@@ -7,8 +7,8 @@ import ExportUI from '../components/LeafletMap/ExportUI'
 const EditMap = (props: any) => {
 
   const drawnLayersRef = useRef(null);
-  const preexistingLocations = useSelector((state: any) => state.locations)
-  console.log("LOCATOINS", preexistingLocations)
+  // const preexistingLocations = useSelector((state: any) => state.locations)
+  // console.log("LOCATOINS", preexistingLocations)
 
   return (
     <>

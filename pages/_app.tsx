@@ -4,14 +4,16 @@ import MainNav from '../components/MainNav/MainNav'
 import { Provider } from 'react-redux'
 import { reduxstore } from '../reduxState/reduxState'
 
+
 function MyApp({ Component, pageProps }: AppProps) {
+  
   return (
-    <Provider store={reduxstore}>
-      <MainNav></MainNav>
-      <main> 
-        <Component {...pageProps}/>
-      </main>
-    </Provider>
+      <Provider store={reduxstore}>
+        <MainNav></MainNav>
+        <main> 
+          <Component {...pageProps}/>
+        </main>
+      </Provider>
   )
 }
 

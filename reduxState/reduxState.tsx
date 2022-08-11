@@ -53,10 +53,28 @@ const locationsSlice = createSlice({
 
 export const { getLocations, addLocations } = locationsSlice.actions
 
+const authenticationSlice = createSlice({
+  name: "authentication",
+  initialState: false,
+  reducers: {
+    signInUser: (state) => {
+      state = true
+      return state
+    },
+    signOutUser: (state) => {
+      state = false
+      return state
+    }
+  }
+})
+
+export const { signInUser, signOutUser } = authenticationSlice.actions
+
 export const reduxstore = configureStore({
   reducer: { 
     counter: counterSlice.reducer,
     name: nameSlice.reducer,
-    locations: locationsSlice.reducer
+    locations: locationsSlice.reducer,
+    authentication: authenticationSlice.reducer
   }
 })
