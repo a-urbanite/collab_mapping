@@ -11,7 +11,8 @@ import PopupForm from './PopupForm'
 import { useDispatch } from 'react-redux';
 import { testing } from '../../reduxState/reduxState'
 import ReactDOMServer from 'react-dom/server'
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
 
 
 interface leafletMapProps {
@@ -42,46 +43,48 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
   // const popup = L.popup();
   // popup.setContent(container);
 
-  const popup = L.popup();
-  // const marker = L.marker(latlng);
-  const container = L.DomUtil.create('div');
-  ReactDOM.render(
-    <form 
-    className={styles.form}
-    onSubmit={(event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }) => {
-      console.log("FORMSUBMIT FUNC TRIGGERD")
-      event.preventDefault()
-      // console.log(new FormData(event.target))
-      const formData = Object.fromEntries(new FormData(event.target));
-      console.log(formData)
+  
+  
+  const renderPopupForm = () => {
+    const popup = L.popup();
+    const container = L.DomUtil.create('div');
+    const root = ReactDOM.createRoot(container);
+    // root.render(element);
+    root.render(
+      <form 
+      className={styles.form}
+      onSubmit={(event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }) => {
+        console.log("FORMSUBMIT FUNC TRIGGERD")
+        event.preventDefault()
+        const formData = Object.fromEntries(new FormData(event.target));
+        console.log(formData)
+        }
       }
-    }
-    >
-      <input
-        id='popupFormName'
-        name='name' 
-        placeholder='name...'
-        // ref={ref}
-        className={styles.inputField}
-      />
-      <textarea 
-        id='popupFormDescr'
-        name="description" 
-        placeholder="description (max 300 characters)"
-        maxLength={300}
-        className={styles.inputTextarea}
-      />
-      <input
-        id='submitBtn'
-        type='submit'
-        name='Submit!'
+      >
+        <input
+          id='popupFormName'
+          name='name' 
+          placeholder='name...'
+          // ref={ref}
+          className={styles.inputField}
         />
-    </form>,
-    container,
-  );
-  popup.setContent(container);
-  // marker.bindPopup(popup);
-  // return marker;
+        <textarea 
+          id='popupFormDescr'
+          name="description" 
+          placeholder="description (max 300 characters)"
+          maxLength={300}
+          className={styles.inputTextarea}
+        />
+        <input
+          id='submitBtn'
+          type='submit'
+          name='Submit!'
+          />
+      </form>
+    );
+    popup.setContent(container);
+    return popup;
+  }
 
 
 
@@ -118,7 +121,7 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
             onCreated={(e) => {
               console.log("onCreated!", e.layer)
               console.log("CREATED LAYER", e.layer.toGeoJSON())
-              e.layer.bindPopup(popup).openPopup();
+              e.layer.bindPopup(renderPopupForm()).openPopup();
             }}
             // onDeleted={() => console.log("onDeleted!")}
             // onMounted={() => console.log("onMounted!")}
