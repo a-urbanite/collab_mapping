@@ -71,11 +71,26 @@ const authenticationSlice = createSlice({
 
 export const { signInUser, signOutUser } = authenticationSlice.actions
 
+const drawSlice = createSlice({
+  name: "drawFeatures",
+  initialState: null,
+  reducers: {
+    testing: (state) => {
+      // state = action.payload
+      console.log("TEST TRIGGERED")
+      return state
+    }
+  }
+})
+
+export const { testing } = drawSlice.actions
+
 export const reduxstore = configureStore({
   reducer: { 
     counter: counterSlice.reducer,
     name: nameSlice.reducer,
     locations: locationsSlice.reducer,
-    authentication: authenticationSlice.reducer
+    authentication: authenticationSlice.reducer,
+    drawFeatures: drawSlice.reducer
   }
 })

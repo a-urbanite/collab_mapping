@@ -1,17 +1,34 @@
-import React from 'react'
+import styles from '../../styles/components/popupForm.module.css'
 
-const PopupForm = () => {
+const PopupForm = (ref: any) => {
   return (
-    <form>
-      <input   
-        name='name' 
-        placeholder='name...'/>
-      <input   
-        name='description' 
-        placeholder='description...'/>
-      <input 
-        type="submit" 
-        value="save"/> 
+    <form 
+      className={styles.form}
+      // onSubmit={(e) => {
+      //   console.log("FORMSUBMIT FUNC TRIGGERD")
+      //   e.preventDefault()
+      // }
+      // }
+      >
+        <input
+          id='popupFormName'
+          name='name' 
+          placeholder='name...'
+          ref={ref}
+          className={styles.inputField}
+        />
+        <textarea 
+          id='popupFormDescr'
+          name="description" 
+          placeholder="description (max 300 characters)"
+          maxLength={300}
+          className={styles.inputTextarea}
+        />
+        <input
+          id='submitBtn'
+          type='submit'
+          name='Submit!'
+          />
     </form>
   )
 }

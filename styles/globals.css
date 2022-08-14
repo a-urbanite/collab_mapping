@@ -15,10 +15,6 @@ a {
   text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 :root {
   --as-Languid-lavender: #C4B7CB;
   --as-Silver-sand: #BBC7CE;
