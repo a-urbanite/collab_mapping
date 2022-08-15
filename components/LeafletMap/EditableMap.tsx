@@ -7,11 +7,8 @@ import { locationsType } from '../../pages/api/starterSet'
 import { EditControl } from 'react-leaflet-draw'
 import styles from '../../styles/components/popupForm.module.css'
 import L from 'leaflet';
-import PopupForm from './PopupForm'
 import { useDispatch } from 'react-redux';
 import { testing } from '../../reduxState/reduxState'
-import ReactDOMServer from 'react-dom/server'
-// import ReactDOM from 'react-dom';
 import * as ReactDOM from 'react-dom/client';
 
 
@@ -23,70 +20,47 @@ interface leafletMapProps {
 const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
   const dispatch = useDispatch()
 
-  // //creating button and its event listener that dispatches action
-  // const button = L.DomUtil.create('button');
-  // button.innerHTML = 'Save';
-  // button.addEventListener('click', () => { 
-  //   console.log(
-  //     "eventlistener triggered, input content: ", 
-  //     document.getElementById('popupFormName')
-  //     )
-  //   dispatch(testing())
-  // });
-
-  // //creating popupcontent out of simple html form and adding button
-  // const container = L.DomUtil.create('div');
-  // container.innerHTML = ReactDOMServer.renderToString(<PopupForm/>);
-  // container.appendChild(button);
-
-  // //creating custom popup and filling it with custom content
-  // const popup = L.popup();
-  // popup.setContent(container);
-
-  
-  
-  const renderPopupForm = () => {
-    const popup = L.popup();
-    const container = L.DomUtil.create('div');
-    const root = ReactDOM.createRoot(container);
-    // root.render(element);
-    root.render(
-      <form 
+  const createPopupContent = (geoJsonString: string) => { 
+   return <form 
       className={styles.form}
       onSubmit={(event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }) => {
         console.log("FORMSUBMIT FUNC TRIGGERD")
         event.preventDefault()
         const formData = Object.fromEntries(new FormData(event.target));
-        console.log(formData)
+        console.log("FORMDATA: ", formData, "GEOJSON: ", geoJsonString)
+        dispatch(testing())
         }
       }
-      >
-        <input
-          id='popupFormName'
-          name='name' 
-          placeholder='name...'
-          // ref={ref}
-          className={styles.inputField}
+    >
+      <input
+        id='popupFormName'
+        name='name' 
+        placeholder='name...'
+        className={styles.inputField}
+      />
+      <textarea 
+        id='popupFormDescr'
+        name="description" 
+        placeholder="description (max 300 characters)"
+        maxLength={300}
+        className={styles.inputTextarea}
+      />
+      <input
+        id='submitBtn'
+        type='submit'
+        name='Submit!'
         />
-        <textarea 
-          id='popupFormDescr'
-          name="description" 
-          placeholder="description (max 300 characters)"
-          maxLength={300}
-          className={styles.inputTextarea}
-        />
-        <input
-          id='submitBtn'
-          type='submit'
-          name='Submit!'
-          />
-      </form>
-    );
+    </form>
+  }
+  
+  const renderPopupForm = (geoJsonString: string) => {
+    const popup = L.popup();
+    const container = L.DomUtil.create('div');
     popup.setContent(container);
+    const root = ReactDOM.createRoot(container);
+    root.render(createPopupContent(geoJsonString));
     return popup;
   }
-
-
 
   return (
     <>
@@ -119,9 +93,10 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
             //   console.log("ONEDITED", e)
             // }}
             onCreated={(e) => {
-              console.log("onCreated!", e.layer)
-              console.log("CREATED LAYER", e.layer.toGeoJSON())
-              e.layer.bindPopup(renderPopupForm()).openPopup();
+              const geoJsonString = e.layer.toGeoJSON()
+              e.layer.bindPopup(renderPopupForm(geoJsonString), {
+                closeButton: false
+              }).openPopup();
             }}
             // onDeleted={() => console.log("onDeleted!")}
             // onMounted={() => console.log("onMounted!")}
