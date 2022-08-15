@@ -11,7 +11,7 @@ const MainNav = () => {
 
   const router = useRouter()
   const dispatch = useDispatch()
-  const isAuth = useSelector((state: any) => state.authentication)
+  const isAuth = useSelector((state: any) => state.currentUser)
   // console.log("ISAUTH", isAuth)
 
 

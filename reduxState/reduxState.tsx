@@ -42,10 +42,10 @@ const locationsSlice = createSlice({
       return state
     },
     addLocations: (state: any, action: any) => {
-      console.log("ADDLOCACTIONS TRIGGERED")
-      console.log("action payload", action.payload)
+      // console.log("ADDLOCACTIONS TRIGGERED")
+      // console.log("action payload", action.payload)
       state = [...action.payload]
-      console.log("state after update", state)
+      // console.log("state after update", state)
       return state
     }
   }
@@ -54,12 +54,12 @@ const locationsSlice = createSlice({
 export const { getLocations, addLocations } = locationsSlice.actions
 
 const authenticationSlice = createSlice({
-  name: "authentication",
+  name: "currentUser",
   initialState: null,
   reducers: {
     signInUser: (state, action) => {
       state = action.payload
-      console.log("state", state)
+      // console.log("state", state)
       return state
     },
     signOutUser: (state) => {
@@ -72,25 +72,30 @@ const authenticationSlice = createSlice({
 export const { signInUser, signOutUser } = authenticationSlice.actions
 
 const drawSlice = createSlice({
-  name: "drawFeatures",
-  initialState: null,
+  name: "drawnFeatures",
+  initialState: [],
   reducers: {
     testing: (state) => {
-      // state = action.payload
       console.log("TEST TRIGGERED")
+      return state
+    },
+    addDrawnFeature: (state: any, action) => {
+      // console.log(action.payload)
+      state = [...state, action.payload]
+      console.log(state)
       return state
     }
   }
 })
 
-export const { testing } = drawSlice.actions
+export const { testing, addDrawnFeature } = drawSlice.actions
 
 export const reduxstore = configureStore({
   reducer: { 
     counter: counterSlice.reducer,
     name: nameSlice.reducer,
     locations: locationsSlice.reducer,
-    authentication: authenticationSlice.reducer,
+    currentUser: authenticationSlice.reducer,
     drawFeatures: drawSlice.reducer
   }
 })

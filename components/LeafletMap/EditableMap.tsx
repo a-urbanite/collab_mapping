@@ -7,10 +7,9 @@ import { locationsType } from '../../pages/api/starterSet'
 import { EditControl } from 'react-leaflet-draw'
 import styles from '../../styles/components/popupForm.module.css'
 import L from 'leaflet';
-import { useDispatch } from 'react-redux';
-import { testing } from '../../reduxState/reduxState'
+import { useDispatch, useSelector } from 'react-redux';
+import { testing, addDrawnFeature } from '../../reduxState/reduxState'
 import * as ReactDOM from 'react-dom/client';
-
 
 interface leafletMapProps {
   locations: locationsType
@@ -19,16 +18,28 @@ interface leafletMapProps {
 
 const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
   const dispatch = useDispatch()
+  const currentUser = useSelector((state: any) => state.currentUser)
+  console.log("currentUser", currentUser)
 
-  const createPopupContent = (geoJsonString: string) => { 
-   return <form 
+  const createPopupContent = (geoJsonObj: any) => { 
+   return (
+    <form 
       className={styles.form}
       onSubmit={(event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }) => {
-        console.log("FORMSUBMIT FUNC TRIGGERD")
+        // console.log("FORMSUBMIT FUNC TRIGGERD")
         event.preventDefault()
         const formData = Object.fromEntries(new FormData(event.target));
-        console.log("FORMDATA: ", formData, "GEOJSON: ", geoJsonString)
-        dispatch(testing())
+
+        dispatch(addDrawnFeature({
+          type: geoJsonObj.type,
+          properties: {
+            userName: currentUser.name,
+            userEmail: currentUser.email,
+            featureName: formData.name, 
+            featureDescr: formData.description,
+          },
+          geometry: geoJsonObj.geometry
+          }))
         }
       }
     >
@@ -51,14 +62,15 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
         name='Submit!'
         />
     </form>
+    )
   }
   
-  const renderPopupForm = (geoJsonString: string) => {
+  const renderPopupForm = (geoJsonObj: any) => {
     const popup = L.popup();
     const container = L.DomUtil.create('div');
     popup.setContent(container);
     const root = ReactDOM.createRoot(container);
-    root.render(createPopupContent(geoJsonString));
+    root.render(createPopupContent(geoJsonObj));
     return popup;
   }
 
@@ -93,8 +105,8 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
             //   console.log("ONEDITED", e)
             // }}
             onCreated={(e) => {
-              const geoJsonString = e.layer.toGeoJSON()
-              e.layer.bindPopup(renderPopupForm(geoJsonString), {
+              const geoJsonObj = e.layer.toGeoJSON()
+              e.layer.bindPopup(renderPopupForm(geoJsonObj), {
                 closeButton: false
               }).openPopup();
             }}
