@@ -106,9 +106,11 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
             // }}
             onCreated={(e) => {
               const geoJsonObj = e.layer.toGeoJSON()
-              e.layer.bindPopup(renderPopupForm(geoJsonObj), {
-                closeButton: false
-              }).openPopup();
+              const boundPopup = e.layer.bindPopup(renderPopupForm(geoJsonObj), {
+                closeButton: false, closeOnClick: false
+              })
+              boundPopup.openPopup();
+
             }}
             // onDeleted={() => console.log("onDeleted!")}
             // onMounted={() => console.log("onMounted!")}
