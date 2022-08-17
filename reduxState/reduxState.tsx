@@ -1,4 +1,4 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit'
+import { createSlice, configureStore, current } from '@reduxjs/toolkit'
 
 const counterSlice = createSlice({
   name: 'counter',
@@ -80,9 +80,26 @@ const drawSlice = createSlice({
       return state
     },
     addDrawnFeature: (state: any, action) => {
-      // console.log(action.payload)
-      state = [...state, action.payload]
-      console.log(state)
+
+      console.log("STATE BEFORE UPDATE", current(state))
+      // console.log("CURRENTFeature", action.payload)
+
+      let duplicateIndex = state.findIndex((feature: any) => 
+          feature.properties.drawingID === action.payload.properties.drawingID
+        );
+
+      console.log("DUPLETTE?: ", duplicateIndex)
+
+      if (duplicateIndex !== -1) {
+        const splicedArr = [...state]
+        splicedArr.splice(duplicateIndex, 1, action.payload)
+        state = [...splicedArr]
+      } else {
+        state = [...state, action.payload]
+      }
+
+      console.log("STATE AFTER UPDATE", state)
+
       return state
     }
   }
@@ -96,6 +113,6 @@ export const reduxstore = configureStore({
     name: nameSlice.reducer,
     locations: locationsSlice.reducer,
     currentUser: authenticationSlice.reducer,
-    drawFeatures: drawSlice.reducer
+    drawnFeatures: drawSlice.reducer
   }
 })

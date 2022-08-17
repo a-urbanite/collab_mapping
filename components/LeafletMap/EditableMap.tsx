@@ -2,7 +2,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-draw/dist/leaflet.draw.css'
-import { FeatureGroup, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import { FeatureGroup, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import { locationsType } from '../../pages/api/starterSet'
 import { EditControl } from 'react-leaflet-draw'
 import styles from '../../styles/components/popupForm.module.css'
@@ -10,6 +10,7 @@ import L from 'leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import { testing, addDrawnFeature } from '../../reduxState/reduxState'
 import * as ReactDOM from 'react-dom/client';
+import { useEffect, useState } from 'react';
 
 interface leafletMapProps {
   locations: locationsType
@@ -19,27 +20,30 @@ interface leafletMapProps {
 const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
   const dispatch = useDispatch()
   const currentUser = useSelector((state: any) => state.currentUser)
-  console.log("currentUser", currentUser)
+  const [map, setMap] = useState<any>(null);
 
-  const createPopupContent = (geoJsonObj: any) => { 
+  const createPopupContent = (geoJsonObj: any, drawingID: number) => { 
    return (
     <form 
       className={styles.form}
       onSubmit={(event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }) => {
-        // console.log("FORMSUBMIT FUNC TRIGGERD")
         event.preventDefault()
         const formData = Object.fromEntries(new FormData(event.target));
 
-        dispatch(addDrawnFeature({
+        const currentFeature = {
           type: geoJsonObj.type,
           properties: {
+            drawingID: drawingID,
             userName: currentUser.name,
             userEmail: currentUser.email,
             featureName: formData.name, 
             featureDescr: formData.description,
           },
           geometry: geoJsonObj.geometry
-          }))
+        }
+        
+        dispatch(addDrawnFeature(currentFeature))
+        map.closePopup()
         }
       }
     >
@@ -59,24 +63,31 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
       <input
         id='submitBtn'
         type='submit'
-        name='Submit!'
+        name='Save'
         />
     </form>
     )
   }
   
-  const renderPopupForm = (geoJsonObj: any) => {
+  const renderPopupForm = (geoJsonObj: any, drawingID: number) => {
+ 
     const popup = L.popup();
     const container = L.DomUtil.create('div');
     popup.setContent(container);
     const root = ReactDOM.createRoot(container);
-    root.render(createPopupContent(geoJsonObj));
+    root.render(createPopupContent(geoJsonObj, drawingID));
     return popup;
   }
 
   return (
     <>
-      <MapContainer center={[52.5200, 13.4050]} zoom={13} scrollWheelZoom={true} style={{height: 400, width: "100%"}}>
+      <MapContainer 
+        center={[52.5200, 13.4050]} 
+        zoom={13} 
+        scrollWheelZoom={true} 
+        style={{height: 400, width: "100%"}}
+        ref={setMap}
+        >
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -106,9 +117,20 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
             // }}
             onCreated={(e) => {
               const geoJsonObj = e.layer.toGeoJSON()
-              const boundPopup = e.layer.bindPopup(renderPopupForm(geoJsonObj), {
+              const drawingID = e.layer._leaflet_id
+              // console.log(drawingID)
+
+              // var drawingID = Math.floor(1000 + Math.random() * 9000);
+              // console.log(drawingID);
+
+              // console.log("layer", e.layer)
+
+              const boundPopup = e.layer.bindPopup(renderPopupForm(geoJsonObj, drawingID), {
                 closeButton: false, closeOnClick: false
               })
+              boundPopup.openPopup();
+              console.log("popup opened")
+              boundPopup.closePopup();
               boundPopup.openPopup();
 
             }}

@@ -22,7 +22,7 @@ const Login = () => {
       console.log(error.message);
     });
     // const user = result?.user
-    console.log("RETURN OF LOGIN OBJECT",result!.user)
+    // console.log("RETURN OF LOGIN OBJECT",result!.user)
     dispatch(signInUser({
       name: result?.user.displayName,
       email: result?.user.email,
