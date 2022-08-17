@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import LeafletMapLoader from '../components/LeafletMap/LeafletMapLoader'
 import { locationsType } from './api/starterSet'
-import { addLocations } from '../reduxState/reduxState'
+import { addLocations } from '../reduxState/locationsSlice'
 
 interface HomepageProps {
   locations: locationsType

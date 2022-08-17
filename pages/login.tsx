@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux'
 import styles from '../styles/pages/login.module.css'
-import { signInUser } from '../reduxState/reduxState';
+import { signInUser } from '../reduxState/authenticationSlice';
 
 const Login = () => {
 

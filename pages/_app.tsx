@@ -3,7 +3,7 @@ import '../styles/popupForm.css'
 import type { AppProps } from 'next/app'
 import MainNav from '../components/MainNav/MainNav'
 import { Provider } from 'react-redux'
-import { reduxstore } from '../reduxState/reduxState'
+import { reduxstore } from '../reduxState/store'
 
 
 function MyApp({ Component, pageProps }: AppProps) {

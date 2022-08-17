@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase-config';
-import { signOutUser } from '../../reduxState/reduxState';
+import { signOutUser } from '../../reduxState/authenticationSlice';
 
 
 const MainNav = () => {

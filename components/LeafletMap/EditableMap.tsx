@@ -8,7 +8,7 @@ import { EditControl } from 'react-leaflet-draw'
 import styles from '../../styles/components/popupForm.module.css'
 import L from 'leaflet';
 import { useDispatch, useSelector } from 'react-redux';
-import { testing, addDrawnFeature } from '../../reduxState/reduxState'
+import { addDrawnFeature } from '../../reduxState/drawSlice'
 import * as ReactDOM from 'react-dom/client';
 import { useEffect, useState } from 'react';
 
@@ -118,19 +118,10 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
             onCreated={(e) => {
               const geoJsonObj = e.layer.toGeoJSON()
               const drawingID = e.layer._leaflet_id
-              // console.log(drawingID)
-
-              // var drawingID = Math.floor(1000 + Math.random() * 9000);
-              // console.log(drawingID);
-
-              // console.log("layer", e.layer)
 
               const boundPopup = e.layer.bindPopup(renderPopupForm(geoJsonObj, drawingID), {
                 closeButton: false, closeOnClick: false
               })
-              boundPopup.openPopup();
-              console.log("popup opened")
-              boundPopup.closePopup();
               boundPopup.openPopup();
 
             }}
