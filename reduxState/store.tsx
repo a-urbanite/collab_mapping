@@ -10,3 +10,5 @@ export const reduxstore = configureStore({
     drawnFeatures: drawSlice.reducer
   }
 })
+
+export type AppDispatch = typeof reduxstore.dispatch

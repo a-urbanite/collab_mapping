@@ -8,7 +8,7 @@ import { EditControl } from 'react-leaflet-draw'
 import styles from '../../styles/components/popupForm.module.css'
 import L from 'leaflet';
 import { useDispatch, useSelector } from 'react-redux';
-import { addDrawnFeature } from '../../reduxState/drawSlice'
+import { addDrawnFeature, commitDrawnFeatures, deleteDrawnFeatures } from '../../reduxState/drawSlice'
 import * as ReactDOM from 'react-dom/client';
 import { useEffect, useState } from 'react';
 
@@ -97,7 +97,7 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
             position="topright"
             draw={{
               rectangle: false,
-              circle: true,
+              circle: false,
               circlemarker: false,
               polyline: { 
                 showLength: true,
@@ -125,18 +125,21 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
               boundPopup.openPopup();
 
             }}
-            // onDeleted={() => console.log("onDeleted!")}
-            // onMounted={() => console.log("onMounted!")}
-            // onEditStart={() => console.log("Edit bar opened")}
-            // onEditStop={() => console.log("Pressed Cancel button in Edit Bar")}
-            // onDeleteStart={() => console.log("onDeleteStart!")}
-            // onDeleteStop={() => console.log("onDeleteStop!")}
-            // onDrawStart={() => console.log("onDrawStart!")}
-            // onDrawStop={() => console.log("onDrawStop!")}
-            // onDrawVertex={() => console.log("onDrawVertex!")}
-            // onEditMove={() => console.log("onEditMove!")}
-            // onEditResize={() => console.log("onEditResize!")}
-            // onEditVertex={() => console.log("onEditVertex!")}
+            onMounted={() => console.log("onMounted!")}
+            onEditStart={() => console.log("Edit bar opened")}
+            onEditStop={() => console.log("Pressed Cancel button in Edit Bar")}
+            onDeleted={() => {
+              console.log("onDeleted!")
+              dispatch(deleteDrawnFeatures())
+            }}
+            onDeleteStart={() => console.log("onDeleteStart!")}
+            onDeleteStop={() => console.log("onDeleteStop!")}
+            onDrawStart={() => console.log("onDrawStart!")}
+            onDrawStop={() => console.log("onDrawStop!")}
+            onDrawVertex={() => console.log("onDrawVertex!")}
+            onEditMove={() => console.log("onEditMove!")}
+            onEditResize={() => console.log("onEditResize!")}
+            onEditVertex={() => console.log("onEditVertex!")}
           />
         </FeatureGroup>   
       </MapContainer>
