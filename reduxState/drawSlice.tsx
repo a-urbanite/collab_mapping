@@ -4,7 +4,7 @@ import { getFirestore, addDoc, collection } from 'firebase/firestore'
 import { app, auth } from '../firebase-config'
 
 const db = getFirestore(app);
-const dbRef = collection(db, "features");
+const dbRef = collection(db, "features3");
 
 // const drawingsCollectionRef = collection(db, "drawings" )
 
@@ -13,11 +13,13 @@ export const commitDrawnFeatures = createAsyncThunk('drawnFeatures/commitDrawnFe
 
     console.log(drawnFeaturesArr)
 
-    drawnFeaturesArr.forEach((feature: any) => {
+    drawnFeaturesArr.forEach(async (feature: any) => {
 
-      console.log("feature to upload: ", feature)
+      // console.log("feature to upload: ", feature)
 
-      addDoc(dbRef, feature)
+      const geoJsonStr = JSON.stringify(feature)
+
+      const res = await addDoc(dbRef, {feature: geoJsonStr})
         .then(docRef => {
             console.log("Document has been added successfully");
         })
@@ -25,6 +27,8 @@ export const commitDrawnFeatures = createAsyncThunk('drawnFeatures/commitDrawnFe
           console.log("error happened!")
             console.log(error);
         })
+      
+      console.log("RES: ", res)
     });
 
     return drawnFeaturesArr
@@ -68,7 +72,7 @@ export const drawSlice = createSlice({
 
       const emptyState: never[] = [];
       state = [...emptyState]
-      
+
       // console.log("state after deleteAction", state)
 
       return state
