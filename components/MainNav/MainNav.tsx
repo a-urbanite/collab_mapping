@@ -34,7 +34,6 @@ const MainNav = () => {
               { !isAuth && <MenuPoint name="Log in" href="/login" className={styles.mainNav__link}/>}
               { isAuth && <li className={styles.mainNav__link} onClick={() => signUserOut()}>Log out</li>}
               { isAuth && <li className={styles.mainNav__link} onClick={() => router.push("/settings")}><AiFillSetting/></li>}
-
           </ul>
       </nav>
     );
