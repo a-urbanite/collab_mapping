@@ -6,31 +6,15 @@ import { app, auth } from '../firebase-config'
 const db = getFirestore(app);
 const dbRef = collection(db, "features3");
 
-// const drawingsCollectionRef = collection(db, "drawings" )
-
 export const commitDrawnFeatures = createAsyncThunk('drawnFeatures/commitDrawnFeatures',
   async (drawnFeaturesArr: any, thunkAPI) => {
-
-    console.log(drawnFeaturesArr)
-
     drawnFeaturesArr.forEach(async (feature: any) => {
-
-      // console.log("feature to upload: ", feature)
-
       const geoJsonStr = JSON.stringify(feature)
-
-      const res = await addDoc(dbRef, {feature: geoJsonStr})
-        .then(docRef => {
-            console.log("Document has been added successfully");
-        })
+      await addDoc(dbRef, {feature: geoJsonStr})
         .catch(error => {
-          console.log("error happened!")
-            console.log(error);
+          console.log("error happened!", error);
         })
-      
-      console.log("RES: ", res)
     });
-
     return drawnFeaturesArr
   }
 )
@@ -89,11 +73,8 @@ export const drawSlice = createSlice({
     })
     .addCase(commitDrawnFeatures.fulfilled, (state, action) => {
       console.log("thunkReducer fulfilled")
-      // console.log("Document has been added successfully");
       console.log("state in extrareducer", current(state))
       console.log("action in extrareducer", action)
-      // Add user to the state array
-      // state.entities.push(action.payload)
     })
   },
 })
