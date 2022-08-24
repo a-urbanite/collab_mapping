@@ -70,6 +70,7 @@ const LeafletMap = () => {
   const renderPopupForm = (geoJsonObj: any, drawingID: number) => {
  
     const popup = L.popup();
+    // popup.set = 200;
     const container = L.DomUtil.create('div');
     popup.setContent(container);
     const root = ReactDOM.createRoot(container);
@@ -118,7 +119,7 @@ const LeafletMap = () => {
               const drawingID = e.layer._leaflet_id
 
               const boundPopup = e.layer.bindPopup(renderPopupForm(geoJsonObj, drawingID), {
-                closeButton: false, closeOnClick: false
+                closeButton: false, closeOnClick: false, minWidth: 240, autoPan: true
               })
               boundPopup.openPopup();
 

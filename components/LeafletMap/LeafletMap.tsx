@@ -4,10 +4,6 @@ import 'leaflet-defaulticon-compatibility';
 import 'leaflet-draw/dist/leaflet.draw.css'
 import { FeatureGroup, MapContainer, Marker, Popup, TileLayer, GeoJSON } from 'react-leaflet'
 import { locationsType } from '../../pages/api/starterSet'
-import { EditControl } from 'react-leaflet-draw'
-import L from 'leaflet';
-import { useRef } from 'react';
-// import GeoJSON from 'geojson';
 
 
 interface leafletMapProps {
@@ -35,6 +31,8 @@ const LeafletMap = ({ locations }:leafletMapProps) => {
               {location.properties.featureDescr}
               <br /> 
               userID: {location.properties.firebaseUserID}
+              <br /> 
+              userName: {location.properties.userName}
               <br />
               creation date: { date }
             </Popup> 
