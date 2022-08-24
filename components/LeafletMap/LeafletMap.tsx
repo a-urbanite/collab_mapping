@@ -31,7 +31,13 @@ const LeafletMap = ({ locations }:leafletMapProps) => {
           //     {location.name} <br /> {location.description}
           //   </Popup> */}
           // </Marker>
-          <GeoJSON data={location.feature} key={location.fireBaseId}></GeoJSON>
+          <GeoJSON data={location.feature} key={location.fireBaseId}>
+            <Popup>
+              <b>{location.feature.properties.featureName}</b> 
+              <br /> 
+              {location.feature.properties.featureDescr}
+            </Popup> 
+          </GeoJSON>
           
           )}
           

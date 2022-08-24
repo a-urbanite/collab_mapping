@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase-config';
 import { signOutUser } from '../../reduxState/authenticationSlice';
+import { AiFillSetting } from "react-icons/ai";
 
 
 const MainNav = () => {
@@ -32,6 +33,7 @@ const MainNav = () => {
               { isAuth && <MenuPoint name="Edit Map" href="/editMap" className={styles.mainNav__link}/>}
               { !isAuth && <MenuPoint name="Log in" href="/login" className={styles.mainNav__link}/>}
               { isAuth && <li className={styles.mainNav__link} onClick={() => signUserOut()}>Log out</li>}
+              { isAuth && <li className={styles.mainNav__link} onClick={() => router.push("/settings")}><AiFillSetting/></li>}
 
           </ul>
       </nav>
