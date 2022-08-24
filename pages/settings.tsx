@@ -1,28 +1,26 @@
-import { getAuth, updateProfile } from "firebase/auth";
-import router from 'next/router';
 import React, { useState } from 'react'
+import router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from "../reduxState/store";
 import { auth } from "../firebase-config";
-import { signInUser } from '../reduxState/authenticationSlice';
+import { updateUser } from "../reduxState/authenticationSlice";
 
 const Settings = () => {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const currentUser = useSelector((state: any) => state.currentUser)
   const [displayname, setdisplayname] = useState<string>(currentUser.name);
+  const [email, setemail] = useState<string>(currentUser.email);
   // const [photoURL, setphotoURL] = useState<string>(auth.currentUser!.photoURL!);
 
-
-const updateUserProfile = async (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault()
-  await updateProfile(auth.currentUser!, {'displayName': displayname, 'photoURL': ""});
-  dispatch(signInUser({
-    name: displayname,
-    email: auth.currentUser?.email,
-    id: auth.currentUser?.uid
-  }))
-  router.push("/")
-}
+  const updateUserProfile = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    dispatch(updateUser({
+        name: displayname,
+        email: email,
+        id: auth.currentUser?.uid
+      }))
+    router.push("/")
+  }
   
   return (
     <>
@@ -35,7 +33,7 @@ const updateUserProfile = async (event: React.FormEvent<HTMLFormElement>) => {
         {/* <label htmlFor="photoURL">photo URL:</label>
         <input id='photoURL' onChange={(event) => {setphotoURL(event.target.value)}} defaultValue={photoURL}></input> */}
         <label htmlFor="email">Email:</label>
-        <input id='email' defaultValue={currentUser.email}/>
+        <input id='email' onChange={(event) => {setemail(event.target.value)}} defaultValue={currentUser.email}/>
         <input type="submit" value="Go!"/>
       </form>
     </>
