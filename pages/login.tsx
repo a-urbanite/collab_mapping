@@ -5,10 +5,11 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux'
 import styles from '../styles/pages/login.module.css'
 import { signInUser } from '../reduxState/authenticationSlice';
+import { AppDispatch } from '../reduxState/store';
 
 const Login = () => {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const router = useRouter()
   const [logInEmail, setlogInEmail] = useState<string>("");
   const [logInPassword, setlogInPassword] = useState<string>("");
@@ -16,18 +17,22 @@ const Login = () => {
 
   const signInWithEmail = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const result = await signInWithEmailAndPassword(auth, logInEmail, logInPassword)
-    .catch(function(error) {
-      console.log(error.code);
-      console.log(error.message);
-    });
+
+    dispatch(signInUser({logInEmail, logInPassword}))
+
+
+    // const result = await signInWithEmailAndPassword(auth, logInEmail, logInPassword)
+    // .catch(function(error) {
+    //   console.log(error.code);
+    //   console.log(error.message);
+    // });
     // const user = result?.user
     // console.log("RETURN OF LOGIN OBJECT",result!.user)
-    dispatch(signInUser({
-      name: result?.user.displayName,
-      email: result?.user.email,
-      id: result?.user.uid
-    }))
+    // dispatch(signInUser({
+    //   name: result?.user.displayName,
+    //   email: result?.user.email,
+    //   id: result?.user.uid
+    // }))
     router.push('/')
   }
 
