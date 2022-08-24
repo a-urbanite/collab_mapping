@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from "../reduxState/store";
@@ -9,6 +9,7 @@ import styles from '../styles/pages/Settings.module.css'
 const Settings = () => {
   const dispatch = useDispatch<AppDispatch>()
   const currentUser = useSelector((state: any) => state.currentUser)
+  console.log(currentUser)
   const [displayname, setdisplayname] = useState<string>(currentUser?.name);
   const [email, setemail] = useState<string>(currentUser?.email);
   // const [photoURL, setphotoURL] = useState<string>(auth.currentUser!.photoURL!);
@@ -22,6 +23,11 @@ const Settings = () => {
       }))
     router.push("/")
   }
+
+  useEffect(() => {
+    console.log(displayname)
+  }, [displayname])
+  
   
   return (
     <div className={styles.SettingsWrapper}>

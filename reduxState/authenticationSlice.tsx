@@ -14,7 +14,8 @@ const initialState = null as UserObjState;
 
 export const updateUser = createAsyncThunk('currentUser/updateUser',
   async (args: any, thunkAPI) => {
-    await updateProfile(auth.currentUser!, {'displayName': args.displayname, 'photoURL': ""})
+    console.log("ARGS: ", args)
+    await updateProfile(auth.currentUser!, {'displayName': args.name, 'photoURL': ""})
       .catch((e) => console.error(e))
     return args
   }
