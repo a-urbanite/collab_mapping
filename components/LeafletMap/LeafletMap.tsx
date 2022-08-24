@@ -28,13 +28,13 @@ const LeafletMap = ({ locations }:leafletMapProps) => {
             <Popup>
               <b>{location.properties.featureName}</b> 
               <br /> 
-              {location.properties.featureDescr}
+              <b>description:</b> {location.properties.featureDescr}
               <br /> 
-              userID: {location.properties.firebaseUserID}
-              <br /> 
-              userName: {location.properties.userName}
+              {/* userID: {location.properties.firebaseUserID}
+              <br />  */}
+              <b>user name:</b> {location.properties.userName}
               <br />
-              creation date: { date }
+              <b>creation date:</b> { date }
             </Popup> 
           </GeoJSON>)
         }
