@@ -23,16 +23,23 @@ const LeafletMap = ({ locations }:leafletMapProps) => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {locations.map((location: any) => 
+        {locations.map((location: any) => {
+          const timeObj =  Date.parse(location.properties.creationDate)
+          const date = new Date(timeObj).toLocaleDateString()
+         
+          return (
           <GeoJSON data={location} key={location.properties.firebaseDocID}>
             <Popup>
               <b>{location.properties.featureName}</b> 
               <br /> 
               {location.properties.featureDescr}
               <br /> 
-              user: {location.properties.userID}
+              userID: {location.properties.firebaseUserID}
+              <br />
+              creation date: { date }
             </Popup> 
-          </GeoJSON>
+          </GeoJSON>)
+        }
           
           )}
           

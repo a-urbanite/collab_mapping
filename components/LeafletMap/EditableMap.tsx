@@ -30,11 +30,12 @@ const LeafletMap = () => {
           type: geoJsonObj.type,
           properties: {
             drawingID: drawingID,
-            userName: currentUser.name,
-            userEmail: currentUser.email,
-            userID: currentUser.id,
             featureName: formData.name, 
             featureDescr: formData.description,
+            userName: currentUser.name,
+            userEmail: currentUser.email,
+            firebaseUserID: currentUser.id,
+            creationDate: Date()
           },
           geometry: geoJsonObj.geometry
         }
