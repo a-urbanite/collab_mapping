@@ -30,7 +30,7 @@ const MainNav = () => {
       <nav className={styles.mainNav}>
           <ul className={styles.list}>
               <MenuPoint name="Home" href="/" className={styles.mainNav__link}/>
-              { isAuth && <MenuPoint name="Edit Map" href="/editMap" className={styles.mainNav__link}/>}
+              { isAuth && <MenuPoint name="My places" href="/editMap" className={styles.mainNav__link}/>}
               { !isAuth && <MenuPoint name="Log in" href="/login" className={styles.mainNav__link}/>}
               { isAuth && <li className={styles.mainNav__link} onClick={() => signUserOut()}>Log out</li>}
               { isAuth && <li className={styles.mainNav__link} onClick={() => router.push("/settings")}><AiFillSetting/></li>}
