@@ -12,10 +12,9 @@ interface HomepageProps {
 
 function HomePage(props: HomepageProps) {
 
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   useEffect(() => { 
     console.log("Props: ", props)
-    // dispatch(addLocations(props.locations)) 
   }, [])
 
   return (
@@ -29,13 +28,13 @@ export async function getServerSideProps() {
   // const data = await fetch('http://localhost:3000/api/locations')
   const db = getFirestore(app);
   const dbRef = collection(db, "features3" )
-  const data = await getDocs(dbRef);
-  const locations: any[] = data.docs.map((doc) => ({...doc.data(), fireBaseId: doc.id}))
-  locations.forEach(location => {
-    location.feature = JSON.parse(location.feature)
-  });
-  console.log("getServerSideProps: ", locations)
-  // const locations = await data.json()
+  const res = await getDocs(dbRef);
+  const locations: any[] = res.docs.map((doc) => {
+      const data = doc.data()
+      const geojsonObj = JSON.parse(data.feature)
+      geojsonObj.properties.firebaseDocID = doc.id
+      return geojsonObj
+  })
   return { props: { locations } }
 }
 

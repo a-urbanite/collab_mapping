@@ -24,18 +24,13 @@ const LeafletMap = ({ locations }:leafletMapProps) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {locations.map((location: any) => 
-          // <Marker 
-          //   key={location.id} 
-          //   position={location.coords}>
-          //   {/* <Popup>
-          //     {location.name} <br /> {location.description}
-          //   </Popup> */}
-          // </Marker>
-          <GeoJSON data={location.feature} key={location.fireBaseId}>
+          <GeoJSON data={location} key={location.properties.firebaseDocID}>
             <Popup>
-              <b>{location.feature.properties.featureName}</b> 
+              <b>{location.properties.featureName}</b> 
               <br /> 
-              {location.feature.properties.featureDescr}
+              {location.properties.featureDescr}
+              <br /> 
+              user: {location.properties.userID}
             </Popup> 
           </GeoJSON>
           

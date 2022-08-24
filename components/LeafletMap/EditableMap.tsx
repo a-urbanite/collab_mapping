@@ -12,14 +12,10 @@ import { addDrawnFeature, commitDrawnFeatures, deleteDrawnFeatures } from '../..
 import * as ReactDOM from 'react-dom/client';
 import { useEffect, useState } from 'react';
 
-interface leafletMapProps {
-  locations: locationsType
-  drawnLayersRef: any
-}
-
-const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
+const LeafletMap = () => {
   const dispatch = useDispatch()
   const currentUser = useSelector((state: any) => state.currentUser)
+  console.log(currentUser)
   const [map, setMap] = useState<any>(null);
 
   const createPopupContent = (geoJsonObj: any, drawingID: number) => { 
@@ -36,6 +32,7 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
             drawingID: drawingID,
             userName: currentUser.name,
             userEmail: currentUser.email,
+            userID: currentUser.id,
             featureName: formData.name, 
             featureDescr: formData.description,
           },
@@ -92,7 +89,7 @@ const LeafletMap = ({ locations, drawnLayersRef }:leafletMapProps) => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <FeatureGroup ref={drawnLayersRef}>
+        <FeatureGroup >
           <EditControl
             position="topright"
             draw={{

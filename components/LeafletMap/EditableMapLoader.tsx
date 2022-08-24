@@ -1,13 +1,7 @@
 import dynamic from 'next/dynamic'
 import React from 'react'
-import { locationsType } from '../../pages/api/starterSet'
 
-interface leafletLoaderProps {
-  locations: locationsType
-  drawnLayersRef: any
-}
-
-const LeafletMapLoader = ({ locations, drawnLayersRef }: leafletLoaderProps) => {
+const LeafletMapLoader = () => {
 
   const Map = dynamic(
     () => import('./EditableMap'),
@@ -18,9 +12,7 @@ const LeafletMapLoader = ({ locations, drawnLayersRef }: leafletLoaderProps) => 
   )
   
   return (
-    <>
-      <Map locations={locations} drawnLayersRef={drawnLayersRef}/>
-    </>
+    <Map />
   )
 }
 
