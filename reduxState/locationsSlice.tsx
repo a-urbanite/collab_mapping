@@ -5,18 +5,6 @@ import { app } from '../firebase-config';
 const db = getFirestore(app);
 const dbRef = collection(db, "features3");
 
-export const fetchLocations = createAsyncThunk('drawnFeatures/commitDrawnFeatures',
-  async ( args , thunkAPI) => {
-
-    console.log("locationsThunk triggered")
-    const dbRef = collection(db, "features3" )
-    const locations = await getDocs(dbRef);
-    console.log("locations: ", locations)
-    return locations
-
-  }
-)
-
 
 export const locationsSlice = createSlice({
   name: "locations",
@@ -25,7 +13,7 @@ export const locationsSlice = createSlice({
     getLocations: (state) => {
       return state
     },
-    addLocations: (state: any, action: any) => {
+    setLocations: (state: any, action: any) => {
       // console.log("ADDLOCACTIONS TRIGGERED")
       // console.log("action payload", action.payload)
       state = [...action.payload]
@@ -35,4 +23,4 @@ export const locationsSlice = createSlice({
   }
 })
 
-export const { getLocations, addLocations } = locationsSlice.actions
+export const { getLocations, setLocations } = locationsSlice.actions

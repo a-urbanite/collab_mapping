@@ -2,7 +2,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-draw/dist/leaflet.draw.css'
-import { FeatureGroup, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
+import { FeatureGroup, MapContainer, Marker, Popup, TileLayer, useMap, GeoJSON } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw'
 import styles from '../../styles/components/popupForm.module.css'
 import L from 'leaflet';
@@ -10,11 +10,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addDrawnFeature, commitDrawnFeatures, deleteDrawnFeatures } from '../../reduxState/drawSlice'
 import * as ReactDOM from 'react-dom/client';
 import { useEffect, useState } from 'react';
+import { setLocations } from '../../reduxState/locationsSlice';
 
 const LeafletMap = () => {
   const dispatch = useDispatch()
   const currentUser = useSelector((state: any) => state.currentUser)
+  const locations = useSelector((state: any) => state.locations)
   const [map, setMap] = useState<any>(null);
+
+  useEffect( () => {
+    const fetchMyLocations = async (uid: any) => {
+      const res = await fetch(`http://localhost:3000/api/locations/${uid}`)
+      const mylocations = await res.json()
+      return mylocations
+    }
+    fetchMyLocations(currentUser.id)
+      .then((mylocations) => dispatch(setLocations(mylocations)))
+  }, [])
+  
 
   const createPopupContent = (geoJsonObj: any, drawingID: number) => { 
    return (
@@ -88,6 +101,7 @@ const LeafletMap = () => {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        
         <FeatureGroup >
           <EditControl
             position="topright"
@@ -138,6 +152,10 @@ const LeafletMap = () => {
             onEditVertex={() => console.log("onEditVertex!")}
           />
         </FeatureGroup>   
+        {locations?.map((location: any) => 
+          <GeoJSON data={location} key={location.properties.firebaseDocID}>
+            
+          </GeoJSON>)}
       </MapContainer>
     </>
   )

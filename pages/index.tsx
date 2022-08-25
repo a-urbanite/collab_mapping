@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import LeafletMapLoader from '../components/LeafletMap/LeafletMapLoader'
+import { setLocations } from '../reduxState/locationsSlice'
 
 function HomePage(props: any) {
 
   useEffect(() => { 
-    console.log("Props: ", props)
+    console.log("Props: ", props.locations)
   }, [])
 
   return (

@@ -3,7 +3,7 @@ import ExportUI from '../components/LeafletMap/ExportUI'
 import LoadingOverlay from 'react-loading-overlay-ts';
 import { useSelector } from 'react-redux';
 
-const EditMap = (props: any) => {
+const EditMap = () => {
   const isLoading = useSelector((state: any) => state.isLoading)
 
   return (
@@ -14,12 +14,6 @@ const EditMap = (props: any) => {
     </LoadingOverlay>
   </>
   )
-}
-
-export async function getServerSideProps() {
-  const data = await fetch('http://localhost:3000/api/locations')
-  const locations = await data.json()
-  return { props: { locations } }
 }
 
 export default EditMap

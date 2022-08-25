@@ -3,14 +3,9 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-draw/dist/leaflet.draw.css'
 import { FeatureGroup, MapContainer, Marker, Popup, TileLayer, GeoJSON } from 'react-leaflet'
-import { locationsType } from '../../pages/api/starterSet'
 
 
-interface leafletMapProps {
-  locations: locationsType
-}
-
-const LeafletMap = ({ locations }:leafletMapProps) => {
+const LeafletMap = ({ locations }: any) => {
 
   return (
     <>
