@@ -9,7 +9,7 @@ import L from 'leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDrawnFeature, commitDrawnFeatures, deleteDrawnFeatures } from '../../reduxState/drawSlice'
 import * as ReactDOM from 'react-dom/client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { setLocations } from '../../reduxState/locationsSlice';
 
 const LeafletMap = () => {
@@ -27,54 +27,74 @@ const LeafletMap = () => {
     fetchMyLocations(currentUser.id)
       .then((mylocations) => dispatch(setLocations(mylocations)))
   }, [])
-  
+
+  function onEachExistingFeature(feature: any, layer: any) {
+    //bind click
+    // console.log("FEATURE", feature)
+    layer.on('click', function (e: any) {
+      const geoJsonObj = e.target.toGeoJSON()
+      const drawingID = e.target._leaflet_id
+      const boundPopup = e.target.bindPopup(renderPopupForm(feature, drawingID), {
+        closeButton: false, closeOnClick: false, minWidth: 240, autoPan: true
+      })
+      boundPopup.openPopup()
+      // console.log(e.target);
+    });
+
+}
 
   const createPopupContent = (geoJsonObj: any, drawingID: number) => { 
-   return (
-    <form 
-      className={styles.form}
-      onSubmit={(event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }) => {
-        event.preventDefault()
-        const formData = Object.fromEntries(new FormData(event.target));
+    
+    const name = geoJsonObj.properties.featureName
+    const descr = geoJsonObj.properties.featureDescr
 
-        const currentFeature = {
-          type: geoJsonObj.type,
-          properties: {
-            drawingID: drawingID,
-            featureName: formData.name, 
-            featureDescr: formData.description,
-            userName: currentUser.name,
-            userEmail: currentUser.email,
-            firebaseUserID: currentUser.id,
-            creationDate: Date()
-          },
-          geometry: geoJsonObj.geometry
+    return (
+      <form 
+        className={styles.form}
+        onSubmit={(event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }) => {
+          event.preventDefault()
+          const formData = Object.fromEntries(new FormData(event.target));
+
+          const currentFeature = {
+            type: geoJsonObj.type,
+            properties: {
+              drawingID: drawingID,
+              featureName: formData.name, 
+              featureDescr: formData.description,
+              userName: currentUser.name,
+              userEmail: currentUser.email,
+              firebaseUserID: currentUser.id,
+              creationDate: Date()
+            },
+            geometry: geoJsonObj.geometry
+          }
+          
+          dispatch(addDrawnFeature(currentFeature))
+          map.closePopup()
+          }
         }
-        
-        dispatch(addDrawnFeature(currentFeature))
-        map.closePopup()
-        }
-      }
-    >
-      <input
-        id='popupFormName'
-        name='name' 
-        placeholder='name...'
-        className={styles.inputField}
-      />
-      <textarea 
-        id='popupFormDescr'
-        name="description" 
-        placeholder="description (max 300 characters)"
-        maxLength={300}
-        className={styles.inputTextarea}
-      />
-      <input
-        id='submitBtn'
-        type='submit'
-        name='Save'
+      >
+        <input
+          id='popupFormName'
+          name='name' 
+          defaultValue={ name ? name : undefined}
+          placeholder='Name...'
+          className={styles.inputField}
         />
-    </form>
+        <textarea 
+          id='popupFormDescr'
+          name="description" 
+          defaultValue={ descr ? descr : undefined}
+          placeholder={'description (max 300 characters)'}
+          maxLength={300}
+          className={styles.inputTextarea}
+        />
+        <input
+          id='submitBtn'
+          type='submit'
+          name='Save'
+          />
+      </form>
     )
   }
   
@@ -121,19 +141,17 @@ const LeafletMap = () => {
                 // shapeOptions: {color: '#97009c'}
               }
             }}
-            // onEdited={(e) => {
-            //   console.log("Pressed Save button in edit bar")
-            //   console.log("ONEDITED", e)
-            // }}
+            onEdited={(e) => {
+              console.log("Pressed Save button in edit bar")
+              // console.log("ONEDITED", e)
+            }}
             onCreated={(e) => {
               const geoJsonObj = e.layer.toGeoJSON()
               const drawingID = e.layer._leaflet_id
-
               const boundPopup = e.layer.bindPopup(renderPopupForm(geoJsonObj, drawingID), {
                 closeButton: false, closeOnClick: false, minWidth: 240, autoPan: true
               })
               boundPopup.openPopup();
-
             }}
             onMounted={() => console.log("onMounted!")}
             onEditStart={() => console.log("Edit bar opened")}
@@ -153,8 +171,17 @@ const LeafletMap = () => {
           />
         </FeatureGroup>   
         {locations?.map((location: any) => 
-          <GeoJSON data={location} key={location.properties.firebaseDocID}>
-            
+
+          // L.marker(L.latLng(stops[i].Position.Lat, stops[i].Position.Lon), {
+          //   title: stops[i].Description
+          // }).addTo(markersLayer).bindPopup("<b>" + stops[i].Description + "</b>").openPopup();
+
+          <GeoJSON 
+            data={location} 
+            key={location.properties.firebaseDocID}
+            onEachFeature={onEachExistingFeature}
+            >
+
           </GeoJSON>)}
       </MapContainer>
     </>
