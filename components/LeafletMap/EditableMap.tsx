@@ -3,7 +3,6 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-draw/dist/leaflet.draw.css'
 import { FeatureGroup, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
-import { locationsType } from '../../pages/api/starterSet'
 import { EditControl } from 'react-leaflet-draw'
 import styles from '../../styles/components/popupForm.module.css'
 import L from 'leaflet';

@@ -1,13 +1,8 @@
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { app } from '../../firebase-config';
-import { starterSet, locationsType } from './starterSet'
+import { db } from '../../firebase-config';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<locationsType>
-) {
-  const db = getFirestore(app);
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const dbRef = collection(db, "features3" )
   const resp = await getDocs(dbRef);
   const locations: any[] = resp.docs.map((doc) => {
@@ -18,3 +13,5 @@ export default async function handler(
   })
   res.status(200).json(locations)
 }
+
+export default handler;
