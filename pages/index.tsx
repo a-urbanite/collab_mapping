@@ -12,7 +12,6 @@ interface HomepageProps {
 
 function HomePage(props: HomepageProps) {
 
-  // const dispatch = useDispatch()
   useEffect(() => { 
     console.log("Props: ", props)
   }, [])
@@ -25,16 +24,8 @@ function HomePage(props: HomepageProps) {
 }
 
 export async function getServerSideProps() {
-  // const data = await fetch('http://localhost:3000/api/locations')
-  const db = getFirestore(app);
-  const dbRef = collection(db, "features3" )
-  const res = await getDocs(dbRef);
-  const locations: any[] = res.docs.map((doc) => {
-      const data = doc.data()
-      const geojsonObj = JSON.parse(data.feature)
-      geojsonObj.properties.firebaseDocID = doc.id
-      return geojsonObj
-  })
+  const res = await fetch('http://localhost:3000/api/locations')
+  const locations = await res.json()
   return { props: { locations } }
 }
 
