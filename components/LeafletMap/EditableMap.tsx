@@ -15,7 +15,6 @@ import { useEffect, useState } from 'react';
 const LeafletMap = () => {
   const dispatch = useDispatch()
   const currentUser = useSelector((state: any) => state.currentUser)
-  console.log(currentUser)
   const [map, setMap] = useState<any>(null);
 
   const createPopupContent = (geoJsonObj: any, drawingID: number) => { 
@@ -70,7 +69,6 @@ const LeafletMap = () => {
   const renderPopupForm = (geoJsonObj: any, drawingID: number) => {
  
     const popup = L.popup();
-    // popup.set = 200;
     const container = L.DomUtil.create('div');
     popup.setContent(container);
     const root = ReactDOM.createRoot(container);
