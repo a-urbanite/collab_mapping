@@ -73,8 +73,10 @@ export const drawSlice = createSlice({
     })
     .addCase(commitDrawnFeatures.fulfilled, (state, action) => {
       console.log("thunkReducer fulfilled")
-      console.log("state in extrareducer", current(state))
-      console.log("action in extrareducer", action)
+      // console.log("state in extrareducer", current(state))
+      // console.log("action in extrareducer", action)
+      state = []
+      return state
     })
   },
 })
