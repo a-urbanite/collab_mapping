@@ -23,12 +23,15 @@ export const updateUser = createAsyncThunk('currentUser/updateUser',
 
 export const signInUser = createAsyncThunk('currentUser/signInUser',
   async (args: any, thunkAPI) => {
-    const result = await signInWithEmailAndPassword(auth, args.logInEmail, args.logInPassword)
-      .catch((e) => console.error(e))
+    const res = await signInWithEmailAndPassword(auth, args.logInEmail, args.logInPassword)
+      .catch((e) => {
+        console.error(e)
+        throw new Error
+      })
     const userObj = {
-      name: result?.user.displayName,
-      email: result?.user.email,
-      id: result?.user.uid
+      name: res?.user.displayName,
+      email: res?.user.email,
+      id: res?.user.uid
     }
     return userObj
   }
@@ -52,7 +55,7 @@ export const authenticationSlice = createSlice({
     .addCase(updateUser.rejected, (state, action) => {
       console.log("updateUser rejected")
     })
-    .addCase(updateUser.fulfilled, (state, action) => {
+    .addCase(updateUser.fulfilled, (state: any, action) => {
       console.log("updateUser fulfilled")
       state = action.payload
       return state
@@ -66,6 +69,7 @@ export const authenticationSlice = createSlice({
     })
     .addCase(signInUser.fulfilled, (state, action) => {
       console.log("signInUser fulfilled")
+      console.log("PAYLOAD", action.payload)
       state = action.payload
       return state
     })
