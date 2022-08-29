@@ -5,9 +5,9 @@ import { setLocations } from '../reduxState/locationsSlice'
 
 function HomePage(props: any) {
 
-  useEffect(() => { 
-    console.log("Props: ", props.locations)
-  }, [])
+  // useEffect(() => { 
+  //   console.log("Props: ", props.locations)
+  // }, [])
 
   return (
     <>
