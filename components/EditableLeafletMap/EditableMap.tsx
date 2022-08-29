@@ -4,7 +4,8 @@ import 'leaflet-defaulticon-compatibility';
 import 'leaflet-draw/dist/leaflet.draw.css'
 import { FeatureGroup, MapContainer, Marker, Popup, TileLayer, useMap, GeoJSON } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw'
-import styles from '../../styles/components/popupForm.module.css'
+import formStyles from '../../styles/components/popupForm.module.css'
+import mapStyles from '../../styles/pages/EditMap.module.css'
 import L from 'leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDrawnFeature, commitDrawnFeatures, deleteDrawnFeatures } from '../../reduxState/drawSlice'
@@ -45,7 +46,7 @@ const LeafletMap = () => {
 
     return (
       <form 
-        className={styles.form}
+        className={formStyles.form}
         onSubmit={(event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }) => {
           event.preventDefault()
           const formData = Object.fromEntries(new FormData(event.target));
@@ -74,7 +75,7 @@ const LeafletMap = () => {
           name='name' 
           defaultValue={ name ? name : undefined}
           placeholder='Name...'
-          className={styles.inputField}
+          className={formStyles.inputField}
         />
         <textarea 
           id='popupFormDescr'
@@ -82,7 +83,7 @@ const LeafletMap = () => {
           defaultValue={ descr ? descr : undefined}
           placeholder={'description (max 300 characters)'}
           maxLength={300}
-          className={styles.inputTextarea}
+          className={formStyles.inputTextarea}
         />
         <input
           id='submitBtn'
@@ -116,7 +117,7 @@ const LeafletMap = () => {
         center={[52.5200, 13.4050]} 
         zoom={13} 
         scrollWheelZoom={true} 
-        style={{height: 400, width: "100%"}}
+        className={mapStyles.mapContainer}
         ref={setMap}
         >
         <TileLayer

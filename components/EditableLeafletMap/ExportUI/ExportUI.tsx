@@ -1,10 +1,10 @@
-import { commitDrawnFeatures } from '../../reduxState/drawSlice'
+import { commitDrawnFeatures } from '../../../reduxState/drawSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch } from '../../reduxState/store'
-import styles from '../../styles/components/exportUI.module.css'
+import { AppDispatch } from '../../../reduxState/store'
+import styles from './exportUI.module.css'
 import Router from 'next/router'
 import { useEffect } from 'react'
-import { activateLoader, deactivateLoader } from '../../reduxState/loadingSlice'
+import { activateLoader, deactivateLoader } from '../../../reduxState/loadingSlice'
 
 const ExportUI = () => {
 

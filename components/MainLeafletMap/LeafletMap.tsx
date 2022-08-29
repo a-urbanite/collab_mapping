@@ -3,13 +3,14 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-draw/dist/leaflet.draw.css'
 import { FeatureGroup, MapContainer, Marker, Popup, TileLayer, GeoJSON } from 'react-leaflet'
+import styles from '../../styles/pages/Home.module.css';
 
 
 const LeafletMap = ({ locations }: any) => {
 
   return (
     <>
-      <MapContainer center={[52.5200, 13.4050]} zoom={13} scrollWheelZoom={true} style={{height: 400, width: "100%"}}>
+      <MapContainer center={[52.5200, 13.4050]} zoom={13} scrollWheelZoom={true} className={styles.mapContainer}>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

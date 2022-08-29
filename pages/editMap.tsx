@@ -1,5 +1,5 @@
-import EditableMapLoader from '../components/LeafletMap/EditableMapLoader'
-import ExportUI from '../components/LeafletMap/ExportUI'
+import EditableMapLoader from '../components/EditableLeafletMap/EditableMapLoader'
+import ExportUI from '../components/EditableLeafletMap/ExportUI/ExportUI'
 import LoadingOverlay from 'react-loading-overlay-ts';
 import { useSelector } from 'react-redux';
 
