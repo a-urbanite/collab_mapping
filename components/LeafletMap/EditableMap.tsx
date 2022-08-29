@@ -18,6 +18,7 @@ const LeafletMap = () => {
   const locations = useSelector((state: any) => state.locations)
   const [map, setMap] = useState<any>(null);
 
+  //fetches mylocations
   useEffect( () => {
     const fetchMyLocations = async (uid: any) => {
       const res = await fetch(`http://localhost:3000/api/locations/${uid}`)
@@ -28,23 +29,17 @@ const LeafletMap = () => {
       .then((mylocations) => dispatch(setLocations(mylocations)))
   }, [])
 
-  function onEachExistingFeature(feature: any, layer: any) {
-    //bind click
-    // console.log("FEATURE", feature)
+  //adds click eventlistener on preexisting features
+  const onEachExistingFeature = (feature: any, layer: any) => {
+    console.log("MAP REF1: ", map)
     layer.on('click', function (e: any) {
-      const geoJsonObj = e.target.toGeoJSON()
-      const drawingID = e.target._leaflet_id
-      const boundPopup = e.target.bindPopup(renderPopupForm(feature, drawingID), {
-        closeButton: false, closeOnClick: false, minWidth: 240, autoPan: true
-      })
-      boundPopup.openPopup()
-      // console.log(e.target);
+      console.log("MAP REF2: ", map)
+      renderPopup(e.target)
     });
-
-}
+  }
 
   const createPopupContent = (geoJsonObj: any, drawingID: number) => { 
-    
+
     const name = geoJsonObj.properties.featureName
     const descr = geoJsonObj.properties.featureDescr
 
@@ -97,15 +92,22 @@ const LeafletMap = () => {
       </form>
     )
   }
-  
-  const renderPopupForm = (geoJsonObj: any, drawingID: number) => {
- 
+
+  const renderPopup = (layer: any) => {
+
+    const geoJsonObj = layer.toGeoJSON()
+    const drawingID = layer._leaflet_id
+
     const popup = L.popup();
     const container = L.DomUtil.create('div');
     popup.setContent(container);
     const root = ReactDOM.createRoot(container);
     root.render(createPopupContent(geoJsonObj, drawingID));
-    return popup;
+
+    const boundPopup = layer.bindPopup(popup, {
+      closeButton: false, closeOnClick: false, minWidth: 240, autoPan: true
+    })
+    boundPopup.openPopup();
   }
 
   return (
@@ -146,12 +148,7 @@ const LeafletMap = () => {
               // console.log("ONEDITED", e)
             }}
             onCreated={(e) => {
-              const geoJsonObj = e.layer.toGeoJSON()
-              const drawingID = e.layer._leaflet_id
-              const boundPopup = e.layer.bindPopup(renderPopupForm(geoJsonObj, drawingID), {
-                closeButton: false, closeOnClick: false, minWidth: 240, autoPan: true
-              })
-              boundPopup.openPopup();
+              renderPopup(e.layer)
             }}
             onMounted={() => console.log("onMounted!")}
             onEditStart={() => console.log("Edit bar opened")}
@@ -170,19 +167,15 @@ const LeafletMap = () => {
             onEditVertex={() => console.log("onEditVertex!")}
           />
         </FeatureGroup>   
+
         {locations?.map((location: any) => 
-
-          // L.marker(L.latLng(stops[i].Position.Lat, stops[i].Position.Lon), {
-          //   title: stops[i].Description
-          // }).addTo(markersLayer).bindPopup("<b>" + stops[i].Description + "</b>").openPopup();
-
           <GeoJSON 
             data={location} 
             key={location.properties.firebaseDocID}
             onEachFeature={onEachExistingFeature}
-            >
+          />
+        )}
 
-          </GeoJSON>)}
       </MapContainer>
     </>
   )

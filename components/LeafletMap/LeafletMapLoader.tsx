@@ -1,12 +1,6 @@
 import dynamic from 'next/dynamic'
-import React from 'react'
-import { locationsType } from '../../pages/api/starterSet'
 
-interface leafletLoaderProps {
-  locations: locationsType
-}
-
-const LeafletMapLoader = ({ locations }: leafletLoaderProps) => {
+const LeafletMapLoader = ({ locations }: any) => {
 
   const Map = dynamic(
     () => import('./LeafletMap'),
