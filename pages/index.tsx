@@ -19,7 +19,6 @@ function HomePage(props: any) {
 
 export async function getServerSideProps() {
   const url = `${env.NEXT_ENV_HOST}/api/locations`
-  // console.log("ENV URL", url)
   const res = await fetch(url)
   const locations = await res.json()
   return { props: { locations } }
