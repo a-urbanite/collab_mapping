@@ -1,18 +1,15 @@
-import LeafletMapLoader from '../components/MainLeafletMap/LeafletMapLoader'
-import { env } from 'process';
+import Router from 'next/router'
+import React, { useEffect } from 'react'
 
-function HomePage(props: any) {
+const Index = () => {
 
+  useEffect(() => {
+    Router.push('/home')
+  }, [])
+  
   return (
-    <LeafletMapLoader locations={props.locations}/>
+    <></>
   )
 }
 
-export async function getServerSideProps() {
-  const url = `${env.NEXT_ENV_HOST}/api/locations`
-  const res = await fetch(url)
-  const locations = await res.json()
-  return { props: { locations } }
-}
-
-export default HomePage
+export default Index

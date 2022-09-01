@@ -29,7 +29,7 @@ const MainNav = () => {
     return (
       <nav className={styles.mainNav}>
           <ul className={styles.list}>
-              <MenuPoint name="Home" href="/" className={styles.mainNav__link}/>
+              <MenuPoint name="Home" href="/home" className={styles.mainNav__link}/>
               { isAuth && <MenuPoint name="My places" href="/editMap" className={styles.mainNav__link}/>}
               { !isAuth && <MenuPoint name="Log in" href="/login" className={styles.mainNav__link}/>}
               { isAuth && <li className={styles.mainNav__link} onClick={() => signUserOut()}>Log out</li>}

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import router from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from "../reduxState/store";
-import { auth } from "../firebase-config";
-import { updateUser } from "../reduxState/authenticationSlice";
-import styles from '../styles/pages/Settings.module.css'
+import { AppDispatch } from "../../reduxState/store";
+import { auth } from "../../firebase-config";
+import { updateUser } from "../../reduxState/authenticationSlice";
+import styles from './Settings.module.css'
 
 const Settings = () => {
   const dispatch = useDispatch<AppDispatch>()

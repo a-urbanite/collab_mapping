@@ -4,8 +4,7 @@ import 'leaflet-defaulticon-compatibility';
 import 'leaflet-draw/dist/leaflet.draw.css'
 import { FeatureGroup, MapContainer, Marker, Popup, TileLayer, useMap, GeoJSON } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw'
-import formStyles from '../../styles/components/popupForm.module.css'
-import mapStyles from '../../styles/pages/EditMap.module.css'
+import styles from './editableMap.module.css'
 import L from 'leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDrawnFeature, commitDrawnFeatures, deleteDrawnFeatures } from '../../reduxState/drawSlice'
@@ -23,7 +22,6 @@ const LeafletMap = () => {
 
   //fetches mylocations
   useEffect( () => {
-    if (!currentUser) return;
     const fetchMyLocations = async (uid: any) => {
       const res = await fetch(`http://localhost:3000/api/locations/${uid}`)
       const mylocations = await res.json()
@@ -49,7 +47,7 @@ const LeafletMap = () => {
 
     return (
       <form 
-        className={formStyles.form}
+        className={styles.form}
         onSubmit={(event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }) => {
           event.preventDefault()
           const formData = Object.fromEntries(new FormData(event.target));
@@ -78,7 +76,7 @@ const LeafletMap = () => {
           name='name' 
           defaultValue={ name ? name : undefined}
           placeholder='Name...'
-          className={formStyles.inputField}
+          className={styles.inputField}
         />
         <textarea 
           id='popupFormDescr'
@@ -86,7 +84,7 @@ const LeafletMap = () => {
           defaultValue={ descr ? descr : undefined}
           placeholder={'description (max 300 characters)'}
           maxLength={300}
-          className={formStyles.inputTextarea}
+          className={styles.inputTextarea}
         />
         <input
           id='submitBtn'
@@ -120,7 +118,7 @@ const LeafletMap = () => {
         center={[52.5200, 13.4050]} 
         zoom={13} 
         scrollWheelZoom={true} 
-        className={mapStyles.mapContainer}
+        className={styles.mapContainer}
         ref={setMapRef}
         >
         <TileLayer
