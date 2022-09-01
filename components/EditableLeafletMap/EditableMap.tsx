@@ -12,12 +12,19 @@ import { addDrawnFeature, commitDrawnFeatures, deleteDrawnFeatures } from '../..
 import * as ReactDOM from 'react-dom/client';
 import { useEffect, useRef, useState } from 'react';
 import { setLocations } from '../../reduxState/locationsSlice';
+import Router from 'next/router';
 
 const LeafletMap = () => {
   const dispatch = useDispatch()
   const currentUser = useSelector((state: any) => state.currentUser)
   const locations = useSelector((state: any) => state.locations)
-  const [map, setMap] = useState<any>(null);
+  const [mapRef, setMapRef] = useState<any>(null);
+
+  useEffect(() => {
+    if (!currentUser) {
+      Router.push('/')
+    }
+  }, [])
 
   //fetches mylocations
   useEffect( () => {
@@ -32,14 +39,14 @@ const LeafletMap = () => {
 
   //adds click eventlistener on preexisting features
   const onEachExistingFeature = (feature: any, layer: any) => {
-    console.log("MAP REF1: ", map)
-    layer.on('click', function (e: any) {
-      console.log("MAP REF2: ", map)
-      renderPopup(e.target)
+    // console.log("MAP REF1: ", mapRef)
+    layer.on('click', function (e: any, map: any) {
+      // console.log("MAP REF2: ", mapRef)
+      renderPopup(e.target, mapRef)
     });
   }
 
-  const createPopupContent = (geoJsonObj: any, drawingID: number) => { 
+  const createPopupContent = (geoJsonObj: any, drawingID: number, mapRef: any) => { 
 
     const name = geoJsonObj.properties.featureName
     const descr = geoJsonObj.properties.featureDescr
@@ -66,7 +73,7 @@ const LeafletMap = () => {
           }
           
           dispatch(addDrawnFeature(currentFeature))
-          map.closePopup()
+          mapRef.closePopup()
           }
         }
       >
@@ -94,7 +101,7 @@ const LeafletMap = () => {
     )
   }
 
-  const renderPopup = (layer: any) => {
+  const renderPopup = (layer: any, mapRef: any) => {
 
     const geoJsonObj = layer.toGeoJSON()
     const drawingID = layer._leaflet_id
@@ -103,7 +110,7 @@ const LeafletMap = () => {
     const container = L.DomUtil.create('div');
     popup.setContent(container);
     const root = ReactDOM.createRoot(container);
-    root.render(createPopupContent(geoJsonObj, drawingID));
+    root.render(createPopupContent(geoJsonObj, drawingID, mapRef));
 
     const boundPopup = layer.bindPopup(popup, {
       closeButton: false, closeOnClick: false, minWidth: 240, autoPan: true
@@ -118,7 +125,7 @@ const LeafletMap = () => {
         zoom={13} 
         scrollWheelZoom={true} 
         className={mapStyles.mapContainer}
-        ref={setMap}
+        ref={setMapRef}
         >
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -149,7 +156,7 @@ const LeafletMap = () => {
               // console.log("ONEDITED", e)
             }}
             onCreated={(e) => {
-              renderPopup(e.layer)
+              renderPopup(e.layer, mapRef)
             }}
             onMounted={() => console.log("onMounted!")}
             onEditStart={() => console.log("Edit bar opened")}
