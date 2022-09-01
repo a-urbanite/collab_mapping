@@ -20,14 +20,10 @@ const LeafletMap = () => {
   const locations = useSelector((state: any) => state.locations)
   const [mapRef, setMapRef] = useState<any>(null);
 
-  useEffect(() => {
-    if (!currentUser) {
-      Router.push('/')
-    }
-  }, [])
 
   //fetches mylocations
   useEffect( () => {
+    if (!currentUser) return;
     const fetchMyLocations = async (uid: any) => {
       const res = await fetch(`http://localhost:3000/api/locations/${uid}`)
       const mylocations = await res.json()
