@@ -6,15 +6,11 @@ interface IUserObj {
   name: string | null | undefined
   email: string | null | undefined
   id: string | null | undefined
-} 
-
-type UserObjState = IUserObj | null
-
-const initialState = null as UserObjState;
+}
 
 export const updateUser = createAsyncThunk('currentUser/updateUser',
   async (args: any, thunkAPI) => {
-    console.log("ARGS: ", args)
+    // console.log("ARGS: ", args)
     await updateProfile(auth.currentUser!, {'displayName': args.name, 'photoURL': ""})
       .catch((e) => console.error(e))
     return args
@@ -39,7 +35,7 @@ export const signInUser = createAsyncThunk('currentUser/signInUser',
 
 export const authenticationSlice = createSlice({
   name: "currentUser",
-  initialState,
+  initialState: null as IUserObj | null,
   reducers: {
     signOutUser: (state) => {
       state = null
@@ -69,7 +65,7 @@ export const authenticationSlice = createSlice({
     })
     .addCase(signInUser.fulfilled, (state, action) => {
       console.log("signInUser fulfilled")
-      console.log("PAYLOAD", action.payload)
+      // console.log("PAYLOAD", action.payload)
       state = action.payload
       return state
     })

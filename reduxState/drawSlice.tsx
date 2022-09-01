@@ -23,10 +23,6 @@ export const drawSlice = createSlice({
   name: "drawnFeatures",
   initialState: [],
   reducers: {
-    testing: (state) => {
-      console.log("TEST TRIGGERED")
-      return state
-    },
     addDrawnFeature: (state: any, action) => {
 
       // console.log("STATE BEFORE UPDATE", current(state))
@@ -81,4 +77,4 @@ export const drawSlice = createSlice({
   },
 })
 
-export const { testing, addDrawnFeature, deleteDrawnFeatures } = drawSlice.actions
+export const { addDrawnFeature, deleteDrawnFeatures } = drawSlice.actions
