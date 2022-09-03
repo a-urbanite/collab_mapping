@@ -11,13 +11,21 @@ import { addDrawnFeature, commitDrawnFeatures, deleteDrawnFeatures } from '../..
 import * as ReactDOM from 'react-dom/client';
 import { useEffect, useRef, useState } from 'react';
 import { setLocations } from '../../reduxState/locationsSlice';
-import Router from 'next/router';
+// import Router from 'next/router';
 
 const LeafletMap = () => {
   const dispatch = useDispatch()
   const currentUser = useSelector((state: any) => state.currentUser)
   const locations = useSelector((state: any) => state.locations)
   const [mapRef, setMapRef] = useState<any>(null);
+
+// useEffect(() => {
+//   if (mapRef) {
+//     console.log("MAPREF", mapRef)
+//     console.log("PANES", mapRef.getPanes())
+//     // console.log(mapRef.getPane('markerPane').children[0])
+//   }
+// }, [mapRef])
 
 
   //fetches mylocations
@@ -32,8 +40,7 @@ const LeafletMap = () => {
   }, [])
 
   //generates the form inside the marker popup
-  const createPopupContent = (geoJsonObj: any, drawingID: number, mapRef: any) => { 
-
+  const createPopupContent = (geoJsonObj: any, drawingID: number, layer: any) => { 
     const name = geoJsonObj.properties.featureName
     const descr = geoJsonObj.properties.featureDescr
 
@@ -59,7 +66,7 @@ const LeafletMap = () => {
           }
           
           dispatch(addDrawnFeature(currentFeature))
-          mapRef.closePopup()
+          layer.closePopup()
           }
         }
       >
@@ -88,21 +95,19 @@ const LeafletMap = () => {
   }
 
   //creates and binds popup to marker
-  const renderPopup = (layer: any, mapRef: any) => {
-
+  const renderPopup = (layer: any) => {
     const geoJsonObj = layer.toGeoJSON()
     const drawingID = layer._leaflet_id
-
-    const popup = L.popup();
     const container = L.DomUtil.create('div');
-    popup.setContent(container);
-    const root = ReactDOM.createRoot(container);
-    root.render(createPopupContent(geoJsonObj, drawingID, mapRef));
+    const popup = L.popup().setContent(container);
 
-    const boundPopup = layer.bindPopup(popup, {
+    const root = ReactDOM.createRoot(container);
+    root.render(createPopupContent(geoJsonObj, drawingID, layer));
+
+    layer.bindPopup(popup, {
       closeButton: false, closeOnClick: false, minWidth: 240, autoPan: true
     })
-    boundPopup.openPopup();
+
   }
 
   return (
@@ -142,8 +147,10 @@ const LeafletMap = () => {
               console.log("Pressed Save button in edit bar")
               // console.log("ONEDITED", e)
             }}
-            onCreated={(e) => {
-              renderPopup(e.layer, mapRef)
+            onCreated={(e) => {  
+              renderPopup(e.layer)
+              e.layer.openPopup() 
+              
             }}
             onMounted={() => console.log("onMounted!")}
             onEditStart={() => console.log("Edit bar opened")}
@@ -167,9 +174,7 @@ const LeafletMap = () => {
           <GeoJSON 
             data={location} 
             key={location.properties.firebaseDocID}
-            onEachFeature={(feature: any, layer: any) => {
-              layer.on('click', () => renderPopup(layer, mapRef) );
-            }}
+            onEachFeature={(feature: any, layer: any) => renderPopup(layer) }
           />
         )}
 
