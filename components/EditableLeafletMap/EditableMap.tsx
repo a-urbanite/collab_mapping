@@ -39,48 +39,53 @@ const LeafletMap = () => {
       .then((mylocations) => dispatch(setLocations(mylocations)))
   }, [])
 
+  const submitFunc = ( event: any, layer: any) => {
+    event.preventDefault()
+    const formData = Object.fromEntries(new FormData(event.target));
+
+    const geoJson = layer.toGeoJSON()
+
+    console.log("inside submitFunc: ", event)
+    console.log("inside submitFunc LAYER OBJ: ", layer)
+
+    const currentFeature = {
+      type: geoJson.type,
+      properties: {
+        drawingID: layer._leaflet_id,
+        featureName: formData.name, 
+        featureDescr: formData.description,
+        userName: currentUser.name,
+        userEmail: currentUser.email,
+        firebaseUserID: currentUser.id,
+        creationDate: Date()
+      },
+      geometry: geoJson.geometry
+    }
+    
+    dispatch(addDrawnFeature(currentFeature))
+    layer.closePopup()
+    }
+
   //generates the form inside the marker popup
-  const createPopupContent = (geoJsonObj: any, drawingID: number, layer: any) => { 
-    const name = geoJsonObj.properties.featureName
-    const descr = geoJsonObj.properties.featureDescr
+  const createPopupContent = ( layer: any ) => { 
 
     return (
       <form 
         className={styles.form}
-        onSubmit={(event: React.FormEvent<HTMLFormElement> & { target: HTMLFormElement }) => {
-          event.preventDefault()
-          const formData = Object.fromEntries(new FormData(event.target));
-
-          const currentFeature = {
-            type: geoJsonObj.type,
-            properties: {
-              drawingID: drawingID,
-              featureName: formData.name, 
-              featureDescr: formData.description,
-              userName: currentUser.name,
-              userEmail: currentUser.email,
-              firebaseUserID: currentUser.id,
-              creationDate: Date()
-            },
-            geometry: geoJsonObj.geometry
-          }
-          
-          dispatch(addDrawnFeature(currentFeature))
-          layer.closePopup()
-          }
+        onSubmit={(e) => submitFunc(e, layer)
         }
       >
         <input
           id='popupFormName'
           name='name' 
-          defaultValue={ name ? name : undefined}
+          defaultValue={ layer.feature ? layer.feature.properties.featureName : undefined}
           placeholder='Name...'
           className={styles.inputField}
         />
         <textarea 
           id='popupFormDescr'
           name="description" 
-          defaultValue={ descr ? descr : undefined}
+          defaultValue={  layer.feature ? layer.feature.properties.featureDescr : undefined}
           placeholder={'description (max 300 characters)'}
           maxLength={300}
           className={styles.inputTextarea}
@@ -96,13 +101,11 @@ const LeafletMap = () => {
 
   //creates and binds popup to marker
   const renderPopup = (layer: any) => {
-    const geoJsonObj = layer.toGeoJSON()
-    const drawingID = layer._leaflet_id
     const container = L.DomUtil.create('div');
     const popup = L.popup().setContent(container);
 
     const root = ReactDOM.createRoot(container);
-    root.render(createPopupContent(geoJsonObj, drawingID, layer));
+    root.render(createPopupContent(layer));
 
     layer.bindPopup(popup, {
       closeButton: false, closeOnClick: false, minWidth: 240, autoPan: true
