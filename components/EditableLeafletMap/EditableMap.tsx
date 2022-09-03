@@ -31,15 +31,7 @@ const LeafletMap = () => {
       .then((mylocations) => dispatch(setLocations(mylocations)))
   }, [])
 
-  //adds click eventlistener on preexisting features
-  const onEachExistingFeature = (feature: any, layer: any) => {
-    // console.log("MAP REF1: ", mapRef)
-    layer.on('click', function (e: any, map: any) {
-      // console.log("MAP REF2: ", mapRef)
-      renderPopup(e.target, mapRef)
-    });
-  }
-
+  //generates the form inside the marker popup
   const createPopupContent = (geoJsonObj: any, drawingID: number, mapRef: any) => { 
 
     const name = geoJsonObj.properties.featureName
@@ -95,6 +87,7 @@ const LeafletMap = () => {
     )
   }
 
+  //creates and binds popup to marker
   const renderPopup = (layer: any, mapRef: any) => {
 
     const geoJsonObj = layer.toGeoJSON()
@@ -174,7 +167,9 @@ const LeafletMap = () => {
           <GeoJSON 
             data={location} 
             key={location.properties.firebaseDocID}
-            onEachFeature={onEachExistingFeature}
+            onEachFeature={(feature: any, layer: any) => {
+              layer.on('click', () => renderPopup(layer, mapRef) );
+            }}
           />
         )}
 
