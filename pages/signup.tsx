@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 import { auth } from '../firebase-config';
-import styles from '../login/login.module.css'
+import styles from './login/login.module.css'
 
 const SignUp = () => {
   const router = useRouter()

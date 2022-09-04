@@ -42,11 +42,10 @@ const LeafletMap = () => {
   const submitFunc = ( event: any, layer: any) => {
     event.preventDefault()
     const formData = Object.fromEntries(new FormData(event.target));
-
     const geoJson = layer.toGeoJSON()
 
-    console.log("inside submitFunc: ", event)
-    console.log("inside submitFunc LAYER OBJ: ", layer)
+    // console.log("inside submitFunc: ", event)
+    // console.log("inside submitFunc LAYER OBJ: ", layer)
 
     const currentFeature = {
       type: geoJson.type,
