@@ -1,16 +1,10 @@
-import {auth} from '../../firebase-config'
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from 'next/router';
-// import { useDispatch } from 'react-redux'
 import styles from './login.module.css'
-// import { signInUser } from '../../reduxState/authenticationSlice';
-// import { AppDispatch } from '../../reduxState/store';
 import { useUserContext } from '../../components/UserContext';
 
 const Login = () => {
   const { signInUser } = useUserContext()
-  // const dispatch = useDispatch<AppDispatch>()
   const router = useRouter()
   const [logInEmail, setlogInEmail] = useState<string>("");
   const [logInPassword, setlogInPassword] = useState<string>("");
@@ -19,7 +13,6 @@ const Login = () => {
   const signInWithEmail = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     signInUser(logInEmail, logInPassword)
-    // dispatch(signInUser({logInEmail, logInPassword}))
     router.push('/')
   }
 
@@ -41,7 +34,6 @@ const Login = () => {
           placeholder='password...'
           onChange={(event) => {setlogInPassword(event.target.value)}}>
         </input>
-        {/* <button onClick={signInWithEmail}>Sign In with Email</button> */}
         <input 
           className={styles.loginForm__submit}
           type="submit" 

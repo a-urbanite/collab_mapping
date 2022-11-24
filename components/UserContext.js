@@ -2,7 +2,7 @@ import * as React from "react";
 import { auth } from "../firebase-config";
 import { useState } from "react";
 // import { useState } from "react";
-import { signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut, updateProfile, createUserWithEmailAndPassword } from "firebase/auth";
 // import { signOut } from 'firebase/auth';
 import { useRouter } from "next/router";
 
@@ -10,8 +10,8 @@ const UserContext = React.createContext();
 
 //context provider hook
 const UserContextProvider = ({ children }) => {
+  const [isAuth, setIsAuth] = useState(false)
   const router = useRouter();
-  const [authenticatedUser, setauthenticatedUser] = useState();
 
   const signInUser = (logInEmail, logInPassword) => {
     signInWithEmailAndPassword(auth, logInEmail, logInPassword)
@@ -19,13 +19,7 @@ const UserContextProvider = ({ children }) => {
         console.error(e);
         throw new Error();
       })
-      .then((res) => {
-        setauthenticatedUser({
-          name: res.user.displayName,
-          email: res.user.email,
-          id: res.user.uid,
-        });
-      });
+      .then(() => setIsAuth(true))
   };
 
   const signOutUser = () => {
@@ -35,7 +29,7 @@ const UserContextProvider = ({ children }) => {
         throw new Error();
       })
       .then(() => {
-        setauthenticatedUser();
+        setIsAuth(false)
         router.push("/");
       });
   };
@@ -46,19 +40,23 @@ const UserContextProvider = ({ children }) => {
         console.error(e);
         throw new Error();
       })
-      .then((res) => {
-        signOutUser()
-        // console.log("res from updateUser", res);
-        // setauthenticatedUser({
-        //   name: res.user.displayName,
-        //   email: res.user.email,
-        //   id: res.user.uid,
-        // });
-      });
   };
 
+  const signUpUser = (signupEmail, signupPassword) => {
+    createUserWithEmailAndPassword(auth, signupEmail, signupPassword)
+      .catch((e) => {
+        console.error(e);
+        throw new Error();
+      })
+      .then(() => {
+        router.push('/login')
+      });
+
+  }
+
+
   return (
-    <UserContext.Provider value={{ authenticatedUser, signInUser, signOutUser, updateUser }}>
+    <UserContext.Provider value={{ isAuth, signInUser, signOutUser, updateUser, signUpUser }}>
       {children}
     </UserContext.Provider>
   );

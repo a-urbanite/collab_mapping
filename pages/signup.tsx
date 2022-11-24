@@ -1,25 +1,17 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
-import { auth } from '../firebase-config';
+import { useUserContext } from '../components/UserContext';
 import styles from './login/login.module.css'
 
 const SignUp = () => {
+  const { signUpUser } = useUserContext()
   const router = useRouter()
 
   const [signupEmail, setsignupEmail] = useState<string>("");
   const [signupPassword, setsignupPassword] = useState<string>("");
 
   const signupWithEmail = async () => {
-    await createUserWithEmailAndPassword(auth, signupEmail as string, signupPassword as string)
-      .catch(function(error) {
-        console.log(error.code); 
-        console.log(error.message);
-      }).then((result) => {
-            // localStorage.setItem("isAuth", `${true}`)
-            // setIsAuth(true);
-            router.push('/login')
-          });
+    await signUpUser(signupEmail, signupPassword)
 
   }
 

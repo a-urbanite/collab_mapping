@@ -4,19 +4,21 @@ import LoadingOverlay from 'react-loading-overlay-ts';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import Router from 'next/router';
+import { auth } from "../firebase-config";
 
 const EditMap = () => {
   const isLoading = useSelector((state: any) => state.isLoading)
-  const currentUser = useSelector((state: any) => state.currentUser)
+  // const currentUser = useSelector((state: any) => state.currentUser)
 
   //redirects to start page in case of empty user
   useEffect(() => {
-    if (!currentUser) {
+    console.log(auth.currentUser)
+    if (!auth.currentUser) {
       Router.push('/')
     }
   }, [])
 
-  if (!currentUser) {
+  if (!auth.currentUser) {
     return <></>
   }
 

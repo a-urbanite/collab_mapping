@@ -11,11 +11,12 @@ import { addDrawnFeature, commitDrawnFeatures, deleteDrawnFeatures } from '../..
 import * as ReactDOM from 'react-dom/client';
 import { useEffect, useRef, useState } from 'react';
 import { setLocations } from '../../reduxState/locationsSlice';
+import { auth } from "../../firebase-config";
 // import Router from 'next/router';
 
 const LeafletMap = () => {
   const dispatch = useDispatch()
-  const currentUser = useSelector((state: any) => state.currentUser)
+  // const currentUser = useSelector((state: any) => state.currentUser)
   const locations = useSelector((state: any) => state.locations)
   const [mapRef, setMapRef] = useState<any>(null);
 
@@ -35,7 +36,7 @@ useEffect(() => {
       const mylocations = await res.json()
       return mylocations
     }
-    fetchMyLocations(currentUser.id)
+    fetchMyLocations(auth.currentUser?.uid)
       .then((mylocations) => dispatch(setLocations(mylocations)))
   }, [])
 
@@ -53,9 +54,9 @@ useEffect(() => {
         drawingID: layer._leaflet_id,
         featureName: formData.name, 
         featureDescr: formData.description,
-        userName: currentUser.name,
-        userEmail: currentUser.email,
-        firebaseUserID: currentUser.id,
+        userName: auth.currentUser?.displayName,
+        userEmail: auth.currentUser?.email,
+        firebaseUserID: auth.currentUser?.uid,
         creationDate: Date()
       },
       geometry: geoJson.geometry
