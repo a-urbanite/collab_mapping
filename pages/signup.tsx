@@ -12,7 +12,7 @@ const SignUp = () => {
 
   const signupWithEmail = async () => {
     await signUpUser(signupEmail, signupPassword)
-
+    router.push('/login')
   }
 
   return (

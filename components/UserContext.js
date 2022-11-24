@@ -1,9 +1,7 @@
 import * as React from "react";
 import { auth } from "../firebase-config";
 import { useState } from "react";
-// import { useState } from "react";
 import { signInWithEmailAndPassword, signOut, updateProfile, createUserWithEmailAndPassword } from "firebase/auth";
-// import { signOut } from 'firebase/auth';
 import { useRouter } from "next/router";
 
 const UserContext = React.createContext();
@@ -48,11 +46,7 @@ const UserContextProvider = ({ children }) => {
         console.error(e);
         throw new Error();
       })
-      .then(() => {
-        router.push('/login')
-      });
-
-  }
+  };
 
 
   return (

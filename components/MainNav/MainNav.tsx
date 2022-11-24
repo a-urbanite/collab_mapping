@@ -14,7 +14,7 @@ const MainNav = () => {
         <MenuPoint href="/home">Home</MenuPoint>
         {isAuth && <MenuPoint href="/editMap">My Places</MenuPoint>}
         {!isAuth && <MenuPoint href="/login">Log in</MenuPoint>}
-        {isAuth && <MenuPoint href="/editMap" func={() => signOutUser()}>Log out</MenuPoint> }
+        {isAuth && <MenuPoint href="/editMap" func={() => {signOutUser()}}>Log out</MenuPoint> }
         {/* {authenticatedUser && <MenuPoint href="/settings"><AiFillSetting/></MenuPoint>} */}
 
         {isAuth && (
