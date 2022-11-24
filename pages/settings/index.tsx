@@ -9,12 +9,14 @@ const Settings = () => {
 
   const [displayname, setdisplayname] = useState<string>(auth.currentUser!.displayName!);
   const [email, setemail] = useState<string>(auth.currentUser!.email!);
+  const [message, setmessage] = useState('')
   // const [photoURL, setphotoURL] = useState<string>(auth.currentUser!.photoURL!);
 
   const updateUserProfile = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     await updateUser(displayname, email)
-    router.push("/")
+    setmessage('Success! information changed!')
+    // router.reload()
   }
   
   
@@ -22,6 +24,7 @@ const Settings = () => {
     <div className={styles.SettingsWrapper}>
       <h1>Settings</h1>
       <p>Welcome {auth.currentUser!.displayName}! Change your profile information here.</p>
+      <p>{message}</p>
       <br></br>
       {/* <img src={auth.currentUser?.photoURL?} className="profilePic" alt='profilePic'></img> */}
       <form className={styles.settingsForm} onSubmit={updateUserProfile}>
