@@ -1,10 +1,17 @@
 import React from 'react'
 import Link from 'next/link'
+import styles from "./MainNav.module.css";
 
-const MenuPoint = ({name, href, className}: any) => {
+interface MenuPointProps {
+  children: any
+  href: string
+  func?: () => void
+}
+
+const MenuPoint = ({children, href, func}: MenuPointProps) => {
   return (
-    <li className={className}>
-      <Link href={href}>{name}</Link>
+    <li className={styles.mainNav__link} onClick={func ? func : () => {}}>
+      <Link href={href}>{children}</Link>
     </li>
   )
 }

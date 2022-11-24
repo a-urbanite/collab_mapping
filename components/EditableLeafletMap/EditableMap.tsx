@@ -19,13 +19,13 @@ const LeafletMap = () => {
   const locations = useSelector((state: any) => state.locations)
   const [mapRef, setMapRef] = useState<any>(null);
 
-// useEffect(() => {
-//   if (mapRef) {
-//     console.log("MAPREF", mapRef)
-//     console.log("PANES", mapRef.getPanes())
-//     // console.log(mapRef.getPane('markerPane').children[0])
-//   }
-// }, [mapRef])
+useEffect(() => {
+  if (mapRef) {
+    console.log("MAPREF", mapRef)
+    console.log("PANES", mapRef.getPanes())
+    // console.log(mapRef.getPane('markerPane').children[0])
+  }
+}, [mapRef])
 
 
   //fetches mylocations
@@ -150,6 +150,7 @@ const LeafletMap = () => {
               // console.log("ONEDITED", e)
             }}
             onCreated={(e) => {  
+              console.log("CREATED EVENT", e)
               renderPopup(e.layer)
               e.layer.openPopup() 
               

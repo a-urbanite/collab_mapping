@@ -1,42 +1,30 @@
-import styles from './MainNav.module.css'
-import MenuPoint from './MenuPoint';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase-config';
-import { signOutUser } from '../../reduxState/authenticationSlice';
+import styles from "./MainNav.module.css";
+import MenuPoint from "./MenuPoint";
+import { useRouter } from "next/router";
 import { AiFillSetting } from "react-icons/ai";
-
+import { useUserContext } from "../../components/UserContext";
 
 const MainNav = () => {
+  const { authenticatedUser, signOutUser } = useUserContext();
+  const router = useRouter();
 
-  const router = useRouter()
-  const dispatch = useDispatch()
-  const isAuth = useSelector((state: any) => state.currentUser)
-  // console.log("ISAUTH", isAuth)
+  return (
+    <nav className={styles.mainNav}>
+      <ul className={styles.list}>
+        <MenuPoint href="/home">Home</MenuPoint>
+        {authenticatedUser && <MenuPoint href="/editMap">My Places</MenuPoint>}
+        {!authenticatedUser && <MenuPoint href="/login">Log in</MenuPoint>}
+        {authenticatedUser && <MenuPoint href="/editMap" func={() => signOutUser()}>Log out</MenuPoint> }
+        {/* {authenticatedUser && <MenuPoint href="/settings"><AiFillSetting/></MenuPoint>} */}
 
-
-  const signUserOut = () => {
-    signOut(auth).then(() => {
-        // localStorage.clear()
-        // setIsAuth(false)
-        // window.location.pathname = "/login"
-        dispatch(signOutUser())
-        router.push("/")
-    })
-  }
-
-    return (
-      <nav className={styles.mainNav}>
-          <ul className={styles.list}>
-              <MenuPoint name="Home" href="/home" className={styles.mainNav__link}/>
-              { isAuth && <MenuPoint name="My places" href="/editMap" className={styles.mainNav__link}/>}
-              { !isAuth && <MenuPoint name="Log in" href="/login" className={styles.mainNav__link}/>}
-              { isAuth && <li className={styles.mainNav__link} onClick={() => signUserOut()}>Log out</li>}
-              { isAuth && <li className={styles.mainNav__link} onClick={() => router.push("/settings")}><AiFillSetting/></li>}
-          </ul>
-      </nav>
-    );
-}
+        {authenticatedUser && (
+          <li className={styles.mainNav__link} onClick={() => router.push("/settings")}>
+            <AiFillSetting />
+          </li>
+        )}
+      </ul>
+    </nav>
+  );
+};
 
 export default MainNav;
